@@ -22,7 +22,6 @@ func main() {
 		SecretKey:  env.AwsConfig.SecretKey,
 		Region:     env.AwsConfig.Region,
 		BucketName: env.AwsConfig.BucketName,
-		OutputPath: env.AwsConfig.OutputPath,
 	})
 	listBuckets := s3.ListBucket()
 
@@ -34,5 +33,5 @@ func main() {
 
 	file := *listBuckets[0].Key
 	log.Printf("Load file %s from S3", file)
-	s3.DownloadFile(file, "")
+	s3.DownloadFile(file, env.AwsConfig.OutputPath)
 }
