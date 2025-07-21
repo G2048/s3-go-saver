@@ -8,8 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 )
 
-const b = 10
-
 func main() {
 	env := configs.NewEnvironment()
 
@@ -36,5 +34,5 @@ func main() {
 
 	file := *listBuckets[0].Key
 	log.Printf("Load file %s from S3", file)
-	s3.DownloadFile(file)
+	s3.DownloadFile(file, "")
 }

@@ -7,6 +7,7 @@ import (
 	"io"
 	"log/slog"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -75,16 +76,19 @@ func createFile(fullPath string) (*os.File, error) {
 	dirs := parts[:len(parts)-1]
 	fileName := parts[len(parts)-1]
 
-	slog.Info(fmt.Sprintf("Creating Directories: %v", dirs))
-	slog.Info("Creating Directories")
+	// Recursively create directories
+	prevDir := ""
+	slog.Debug(fmt.Sprintf("Creating Directories: %v", dirs))
 	for _, path := range dirs {
-		slog.Debug("Creating path: ", "path:", path)
-		err = os.MkdirAll(path, 0755)
+		slog.Debug(fmt.Sprintf("Creating path: %s", path))
+		prevDir = filepath.Join(prevDir, path)
+		err = os.MkdirAll(prevDir, 0755)
 		if err != nil {
 			slog.Error(fmt.Sprintf("Couldn't create directory. Here's why: %s", err))
 			return nil, err
 		}
 	}
+
 	slog.Info(fmt.Sprintf("Creating file: %s", fileName))
 	file, err := os.Create(fullPath)
 	if err != nil {
@@ -93,7 +97,10 @@ func createFile(fullPath string) (*os.File, error) {
 	}
 	return file, err
 }
-func (client *S3Client) DownloadFile(fileName string) error {
+func (client *S3Client) DownloadFile(fileName string, outputDir string) error {
+	if outputDir == "" {
+		outputDir = "."
+	}
 	result, err := client.s3.GetObject(context.TODO(), &s3.GetObjectInput{
 		Bucket: aws.String(client.BucketName),
 		Key:    aws.String(fileName),
@@ -104,7 +111,7 @@ func (client *S3Client) DownloadFile(fileName string) error {
 	}
 	defer result.Body.Close()
 
-	file, err := createFile(fileName)
+	file, err := createFile(outputDir + "/" + fileName)
 	if err != nil {
 		slog.Error(fmt.Sprintf("Couldn't create file. Here's why: %s", err))
 		return err
