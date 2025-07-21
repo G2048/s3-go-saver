@@ -14,7 +14,6 @@ type AwsConfig struct {
 	SecretKey  string
 	Region     string
 	BucketName string
-	OutputPath string
 }
 
 type S3Client struct {
