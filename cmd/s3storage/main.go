@@ -6,8 +6,6 @@ import (
 	"s3storage/cmd"
 	"s3storage/configs"
 	"s3storage/internal/s3"
-
-	"github.com/aws/aws-sdk-go-v2/aws"
 )
 
 func main() {
@@ -28,10 +26,10 @@ func main() {
 	})
 
 	if cmdArgs.List {
-		listBuckets := s3.ListBucket()
+		listBuckets := *s3.ListBucket()
 		log.Println("first page results")
 		for _, object := range listBuckets {
-			fmt.Printf("key=%s size=%d\n", aws.ToString(object.Key), *object.Size)
+			fmt.Printf("key=%s size=%d\n", object.Key, object.Size)
 		}
 		fmt.Printf("\nTotal Count objects: %d\n", len(listBuckets))
 	}

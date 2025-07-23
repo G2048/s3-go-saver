@@ -15,14 +15,27 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 )
 
-func (client *S3Client) ListBucket() []types.Object {
+type ListBucketOutput struct {
+	Key  string
+	Size int64
+}
+
+func (client *S3Client) listBucket() ([]types.Object, error) {
 	output, err := client.s3.ListObjectsV2(context.TODO(), &s3.ListObjectsV2Input{
 		Bucket: aws.String(client.BucketName),
 	})
+	return output.Contents, err
+}
+func (client *S3Client) ListBucket() *[]ListBucketOutput {
+	list, err := client.listBucket()
 	if err != nil {
 		slog.Error(fmt.Sprintf("Couldn't list objects in bucket. Here's why: %s", err))
 	}
-	return output.Contents
+	output := make([]ListBucketOutput, len(list))
+	for _, object := range list {
+		output = append(output, ListBucketOutput{aws.ToString(object.Key), *object.Size})
+	}
+	return &output
 }
 
 func (client *S3Client) CreateBucket() *s3.CreateBucketOutput {
