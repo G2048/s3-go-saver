@@ -7,7 +7,9 @@ import (
 )
 
 type CmdArgs struct {
-	List bool
+	List     bool
+	Download bool
+	Upload   bool
 }
 
 func NewCmdArgs() *CmdArgs {
@@ -17,9 +19,13 @@ func NewCmdArgs() *CmdArgs {
 		flag.PrintDefaults()
 	}
 	var list = flag.Bool("list", false, "List all files in bucket")
+	var upload = flag.Bool("upload", false, "Upload file to S3")
+	var download = flag.Bool("download", false, "Download file from S3")
 
 	flag.Parse()
 	return &CmdArgs{
-		List: *list,
+		List:     *list,
+		Download: *download,
+		Upload:   *upload,
 	}
 }
