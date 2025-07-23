@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 	"s3storage/cmd"
+	"s3storage/configs"
 	"s3storage/internal/s3"
-	"s3storage/pkg/configs"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 )
