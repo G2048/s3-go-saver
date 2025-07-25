@@ -142,3 +142,15 @@ func (client *S3Client) DownloadFile(fileName string, outputDir string) error {
 	}
 	return err
 }
+
+func (s *S3Client) DeleteFile(fileName string) error {
+	_, err := s.s3.DeleteObject(context.TODO(), &s3.DeleteObjectInput{
+		Bucket: aws.String(s.BucketName),
+		Key:    aws.String(fileName),
+	})
+	if err != nil {
+		slog.Error(fmt.Sprintf("Couldn't delete object from S3. Here's why: %s", err))
+		return err
+	}
+	return err
+}

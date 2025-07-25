@@ -3,10 +3,19 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"s3storage/cmd"
 	"s3storage/configs"
 	"s3storage/internal/s3"
 )
+
+func exist(path string) {
+	_, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		log.Fatalf("File '%s' is not found!", path)
+		os.Exit(1)
+	}
+}
 
 func main() {
 	cmdArgs := cmd.NewCmdArgs()
@@ -33,10 +42,29 @@ func main() {
 		}
 		fmt.Printf("\nTotal Count objects: %d\n", len(listBuckets))
 	}
-
-	// file := *listBuckets[0].Key
-	// log.Printf("Load file %s from S3", file)
-	// for _, object := range listBuckets {
-	// s3.DownloadFile(*object.Key, env.AwsConfig.OutputPath)
-	// }
+	if cmdArgs.Upload != "" {
+		exist(cmdArgs.Upload)
+		fmt.Printf("Upload file '%s' to S3\n", cmdArgs.Upload)
+		if err := s3.UploadFile(cmdArgs.Upload); err != nil {
+			panic(err)
+		}
+	}
+	if cmdArgs.Download != "" {
+		fmt.Printf("Download file '%s' from S3\n", cmdArgs.Download)
+		s3.DownloadFile(cmdArgs.Download, env.AwsConfig.OutputPath)
+	}
+	if cmdArgs.DowloadAll {
+		listBuckets := *s3.ListBucket()
+		log.Println("first page results")
+		for _, object := range listBuckets {
+			log.Printf("Load file %s from S3", object.Key)
+			s3.DownloadFile(object.Key, env.AwsConfig.OutputPath)
+		}
+	}
+	if cmdArgs.Delete != "" {
+		fmt.Printf("Delete file '%s' from S3\n", cmdArgs.Delete)
+		if err := s3.DeleteFile(cmdArgs.Delete); err != nil {
+			panic(err)
+		}
+	}
 }
