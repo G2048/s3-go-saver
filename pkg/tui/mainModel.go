@@ -74,7 +74,7 @@ func (m ModelTabs) View() string {
 		} else if isFirst && !isActive {
 			border.BottomLeft = "├"
 		} else if isLast && isActive {
-			border.BottomRight = "│"
+			border.BottomRight = "└"
 		} else if isLast && !isActive {
 			border.BottomRight = "┴"
 		}
