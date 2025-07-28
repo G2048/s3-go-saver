@@ -97,12 +97,13 @@ func (m ModelTabs) View() string {
 	return m.DocStyle.Render(doc.String())
 }
 
-func NewModelTabs() *ModelTabs {
-	tabs := []string{"Lip Gloss", "Blush", "Eye Shadow", "Mascara", "Foundation"}
-	tabContent := []string{"Lip Gloss Tab", "Blush Tab", "Eye Shadow Tab", "Mascara Tab", "Foundation Tab"}
-
+func NewModelTabs(tabs, tabsContent []string) *ModelTabs {
 	var window = NewWindows()
 	var listKeys = NewListKeyMap()
-	return &ModelTabs{Windows: window, Keys: listKeys, Tabs: tabs, TabContent: tabContent}
-
+	return &ModelTabs{Windows: window, Keys: listKeys, Tabs: tabs, TabContent: tabsContent}
+}
+func TestModelTabs() *ModelTabs {
+	tabs := []string{"Lip Gloss", "Blush", "Eye Shadow", "Mascara", "Foundation"}
+	tabsContent := []string{"Lip Gloss Tab", "Blush Tab", "Eye Shadow Tab", "Mascara Tab", "Foundation Tab"}
+	return NewModelTabs(tabs, tabsContent)
 }

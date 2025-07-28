@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	m := tui.NewModelTabs()
+	m := tui.TestModelTabs()
 	if _, err := tea.NewProgram(m, tea.WithAltScreen()).Run(); err != nil {
 		fmt.Println("Error running program:", err)
 		os.Exit(1)
