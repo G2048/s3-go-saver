@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
@@ -12,7 +13,7 @@ import (
 
 const (
 	identRightEdge int = 5
-	identHight     int = 4
+	identHight     int = 6
 )
 
 type ModelTabs struct {
@@ -21,6 +22,7 @@ type ModelTabs struct {
 	Tabs       []string
 	TabContent []string
 	Keys       *ListKeyMap
+	help       help.Model
 	activeTab  int
 	width      int
 	height     int
@@ -60,6 +62,12 @@ func (m ModelTabs) View() string {
 	doc := strings.Builder{}
 	var renderedTabs []string
 	var style lipgloss.Style
+	help := m.help.ShortHelpView([]key.Binding{
+		m.Keys.NextTab,
+		m.Keys.PrevTab,
+		m.Keys.Exit,
+		m.Keys.HelpMenu,
+	})
 
 	for i, t := range m.Tabs {
 		isFirst, isLast, isActive := i == 0, i == len(m.Tabs)-1, i == m.activeTab
@@ -94,13 +102,20 @@ func (m ModelTabs) View() string {
 		Height(m.height - identHight)
 	doc.WriteString(row + "\n")
 	doc.WriteString(windowStyle.Render(m.TabContent[m.activeTab]))
+	doc.WriteString("\n" + help)
 	return m.DocStyle.Render(doc.String())
 }
 
 func NewModelTabs(tabs, tabsContent []string) *ModelTabs {
 	var window = NewWindows()
 	var listKeys = NewListKeyMap()
-	return &ModelTabs{Windows: window, Keys: listKeys, Tabs: tabs, TabContent: tabsContent}
+	return &ModelTabs{
+		Windows:    window,
+		Keys:       listKeys,
+		Tabs:       tabs,
+		TabContent: tabsContent,
+		help:       help.New(),
+	}
 }
 func TestModelTabs() *ModelTabs {
 	tabs := []string{"Lip Gloss", "Blush", "Eye Shadow", "Mascara", "Foundation"}
