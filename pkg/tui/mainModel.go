@@ -17,7 +17,7 @@ const (
 )
 
 type ModelTabs struct {
-	*Windows
+	windows    *Windows
 	list       list.Model
 	Tabs       []string
 	TabContent []string
@@ -72,9 +72,9 @@ func (m ModelTabs) View() string {
 	for i, t := range m.Tabs {
 		isFirst, isLast, isActive := i == 0, i == len(m.Tabs)-1, i == m.activeTab
 		if isActive {
-			style = m.ActiveTabStyle
+			style = m.windows.ActiveTabStyle
 		} else {
-			style = m.InactiveTabStyle
+			style = m.windows.InactiveTabStyle
 		}
 		border, _, _, _, _ := style.GetBorder()
 		if isFirst && isActive {
@@ -94,23 +94,23 @@ func (m ModelTabs) View() string {
 	if fillerStringLen > 0 {
 		fillerString := strings.Repeat("─", fillerStringLen+1)
 		fillerString += "┐"
-		row = lipgloss.JoinHorizontal(lipgloss.Bottom, row, m.FillerStyle.Render(fillerString))
+		row = lipgloss.JoinHorizontal(lipgloss.Bottom, row, m.windows.FillerStyle.Render(fillerString))
 	}
 
 	// -5 от правого края к левому!!!!
-	windowStyle := m.Style.Width(m.width - identRightEdge).
+	windowStyle := m.windows.Style.Width(m.width - identRightEdge).
 		Height(m.height - identHight)
 	doc.WriteString(row + "\n")
 	doc.WriteString(windowStyle.Render(m.TabContent[m.activeTab]))
 	doc.WriteString("\n" + help)
-	return m.DocStyle.Render(doc.String())
+	return m.windows.DocStyle.Render(doc.String())
 }
 
 func NewModelTabs(tabs, tabsContent []string) *ModelTabs {
 	var window = NewWindows()
 	var listKeys = NewListKeyMap()
 	return &ModelTabs{
-		Windows:    window,
+		windows:    window,
 		Keys:       listKeys,
 		Tabs:       tabs,
 		TabContent: tabsContent,
