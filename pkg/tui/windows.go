@@ -61,7 +61,7 @@ func (wd *WindowDrawing) DocStyle() lipgloss.Style {
 // Core Area
 func (wd *WindowDrawing) Style() lipgloss.Style {
 	return lipgloss.NewStyle().BorderForeground(wd.highlightColor()).
-		Align(lipgloss.Center).         // allign Text in area
+		Align(lipgloss.Left).           // allign Text in area
 		AlignVertical(lipgloss.Center). // allign Text in area
 		Border(lipgloss.RoundedBorder()).
 		Padding(0, 2).
