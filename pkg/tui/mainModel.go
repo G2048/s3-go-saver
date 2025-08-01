@@ -1,7 +1,6 @@
 package tui
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/help"
@@ -17,15 +16,15 @@ const (
 )
 
 type ModelTabs struct {
-	windows    *Windows
-	Keys       *ListKeyMap
-	Tabs       []string
-	TabContent []string
-	list       list.Model
-	help       help.Model
-	activeTab  int
-	width      int
-	height     int
+	windows *Windows
+	Keys    *ListKeyMap
+	Tabs    []string
+	// TabContent []string
+	list      list.Model
+	help      help.Model
+	activeTab int
+	width     int
+	height    int
 }
 
 func (m ModelTabs) Init() tea.Cmd {
@@ -50,12 +49,12 @@ func (m ModelTabs) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.prevTab()
 		}
 	case tea.WindowSizeMsg:
-		h, v := docStyle.GetFrameSize()
+		h, v := m.windows.DocStyle.GetFrameSize()
 		m.list.SetSize(msg.Width-h-identHight, msg.Height-v-identRightEdge)
 		m.width = msg.Width
 		m.height = msg.Height
 	}
-	m.TabContent[m.activeTab] = fmt.Sprintf("Height: %d, Width: %d", m.height, m.width)
+	// m.TabContent[m.activeTab] = fmt.Sprintf("Height: %d, Width: %d", m.height, m.width)
 
 	var cmd tea.Cmd
 	m.list, cmd = m.list.Update(msg)
@@ -111,23 +110,23 @@ func (m ModelTabs) View() string {
 	return m.windows.DocStyle.Render(doc.String())
 }
 
-func NewModelTabs(tabs, tabsContent []string) *ModelTabs {
+func NewModelTabs(tabs []string, items []list.Item) *ModelTabs {
 	var window = NewWindows()
 	var listKeys = NewListKeyMap()
-	var items = NewItems()
 	var list = list.New(items, list.NewDefaultDelegate(), 0, 0)
 	list.SetShowTitle(false)
 	return &ModelTabs{
-		windows:    window,
-		Keys:       listKeys,
-		Tabs:       tabs,
-		list:       list,
-		TabContent: tabsContent,
-		help:       help.New(),
+		windows: window,
+		Keys:    listKeys,
+		Tabs:    tabs,
+		list:    list,
+		// TabContent: tabsContent,
+		help: help.New(),
 	}
 }
 func TestModelTabs() *ModelTabs {
 	tabs := []string{"Lip Gloss", "Blush", "Eye Shadow", "Mascara", "Foundation"}
-	tabsContent := []string{"Lip Gloss Tab", "Blush Tab", "Eye Shadow Tab", "Mascara Tab", "Foundation Tab"}
-	return NewModelTabs(tabs, tabsContent)
+	// tabsContent := []string{"Lip Gloss Tab", "Blush Tab", "Eye Shadow Tab", "Mascara Tab", "Foundation Tab"}
+	var items = NewItems()
+	return NewModelTabs(tabs, items)
 }
