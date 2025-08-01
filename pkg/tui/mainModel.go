@@ -18,10 +18,10 @@ const (
 
 type ModelTabs struct {
 	windows    *Windows
-	list       list.Model
+	Keys       *ListKeyMap
 	Tabs       []string
 	TabContent []string
-	Keys       *ListKeyMap
+	list       list.Model
 	help       help.Model
 	activeTab  int
 	width      int
@@ -50,12 +50,16 @@ func (m ModelTabs) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.prevTab()
 		}
 	case tea.WindowSizeMsg:
+		h, v := docStyle.GetFrameSize()
+		m.list.SetSize(msg.Width-h-identHight, msg.Height-v-identRightEdge)
 		m.width = msg.Width
 		m.height = msg.Height
 	}
 	m.TabContent[m.activeTab] = fmt.Sprintf("Height: %d, Width: %d", m.height, m.width)
 
-	return m, nil
+	var cmd tea.Cmd
+	m.list, cmd = m.list.Update(msg)
+	return m, cmd
 }
 
 func (m ModelTabs) View() string {
@@ -101,7 +105,8 @@ func (m ModelTabs) View() string {
 	windowStyle := m.windows.Style.Width(m.width - identRightEdge).
 		Height(m.height - identHight)
 	doc.WriteString(row + "\n")
-	doc.WriteString(windowStyle.Render(m.TabContent[m.activeTab]))
+	// doc.WriteString(windowStyle.Render(m.TabContent[m.activeTab]))
+	doc.WriteString(windowStyle.Render(m.list.View()))
 	doc.WriteString("\n" + help)
 	return m.windows.DocStyle.Render(doc.String())
 }
@@ -109,10 +114,14 @@ func (m ModelTabs) View() string {
 func NewModelTabs(tabs, tabsContent []string) *ModelTabs {
 	var window = NewWindows()
 	var listKeys = NewListKeyMap()
+	var items = NewItems()
+	var list = list.New(items, list.NewDefaultDelegate(), 0, 0)
+	list.SetShowTitle(false)
 	return &ModelTabs{
 		windows:    window,
 		Keys:       listKeys,
 		Tabs:       tabs,
+		list:       list,
 		TabContent: tabsContent,
 		help:       help.New(),
 	}
