@@ -127,6 +127,6 @@ func NewModelTabs(tabs []string, items []list.Item) *ModelTabs {
 func TestModelTabs() *ModelTabs {
 	tabs := []string{"Lip Gloss", "Blush", "Eye Shadow", "Mascara", "Foundation"}
 	// tabsContent := []string{"Lip Gloss Tab", "Blush Tab", "Eye Shadow Tab", "Mascara Tab", "Foundation Tab"}
-	var items = NewItems()
+	var items = NewTestItems()
 	return NewModelTabs(tabs, items)
 }

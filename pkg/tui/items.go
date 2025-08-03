@@ -12,7 +12,7 @@ func (i Item) Title() string       { return i.Top }
 func (i Item) Description() string { return i.Desc }
 func (i Item) FilterValue() string { return i.Top }
 
-func NewItems() []list.Item {
+func NewTestItems() []list.Item {
 	return []list.Item{
 		Item{Top: "Raspberry Pi’s", Desc: "I have ’em all over my house"},
 		Item{Top: "Nutella", Desc: "It's good on toast"},
