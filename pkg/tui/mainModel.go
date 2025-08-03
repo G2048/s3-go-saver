@@ -19,6 +19,11 @@ type Tab string
 type Items []list.Item
 type TabsItems map[Tab]Items
 
+type Storage interface {
+	GetTabsItems() TabsItems
+	GetTabs() []Tab
+}
+
 type ModelTabs struct {
 	windows   *Windows
 	Keys      *ListKeyMap
@@ -35,8 +40,8 @@ func (m ModelTabs) Init() tea.Cmd {
 	return nil
 }
 func (m *ModelTabs) initList() {
-	tabKey := m.Tabs[m.activeTab] // [Tab1, Tab2]
-	items := m.TabsItems[tabKey]  // {Tab1: [Item1, Item2], Tab2: [Item3, Item4]}
+	tabKey := m.Tabs[0]          // [Tab1, Tab2]
+	items := m.TabsItems[tabKey] // {Tab1: [Item1, Item2], Tab2: [Item3, Item4]}
 	m.list = list.New(items, list.NewDefaultDelegate(), 0, 0)
 	m.list.SetShowTitle(false)
 }
@@ -50,7 +55,6 @@ func (m *ModelTabs) nextTab() {
 	m.activeTab = min(m.activeTab+1, len(m.Tabs)-1)
 	m.setListForCurrentTab()
 }
-
 func (m *ModelTabs) prevTab() {
 	m.activeTab = max(m.activeTab-1, 0)
 	m.setListForCurrentTab()
@@ -64,6 +68,8 @@ func (m ModelTabs) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, m.Keys.NextTab):
 			m.nextTab()
 		case key.Matches(msg, m.Keys.PrevTab):
+			m.prevTab()
+		case key.Matches(msg, m.Keys.Download):
 			m.prevTab()
 		}
 	case tea.WindowSizeMsg:
@@ -128,19 +134,15 @@ func (m ModelTabs) View() string {
 	return m.windows.DocStyle.Render(doc.String())
 }
 
-func NewModelTabs(ti TabsItems) *ModelTabs {
+func NewModelTabs(s Storage) *ModelTabs {
 	var window = NewWindows()
 	var listKeys = NewListKeyMap()
-	var tabs []Tab
-	for tab, _ := range ti {
-		tabs = append(tabs, tab)
-	}
 
 	m := ModelTabs{
 		windows:   window,
 		Keys:      listKeys,
-		Tabs:      tabs,
-		TabsItems: ti,
+		Tabs:      s.GetTabs(),
+		TabsItems: s.GetTabsItems(),
 		help:      help.New(),
 	}
 	m.initList()
