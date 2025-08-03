@@ -15,11 +15,15 @@ const (
 	identHight     int = 6
 )
 
+type Tab string
+type Items []list.Item
+type TabsItems map[Tab]Items
+
 type ModelTabs struct {
-	windows *Windows
-	Keys    *ListKeyMap
-	Tabs    []string
-	// TabContent []string
+	windows   *Windows
+	Keys      *ListKeyMap
+	Tabs      []Tab
+	TabsItems map[Tab]Items
 	list      list.Model
 	help      help.Model
 	activeTab int
@@ -30,12 +34,26 @@ type ModelTabs struct {
 func (m ModelTabs) Init() tea.Cmd {
 	return nil
 }
+func (m *ModelTabs) initList() {
+	tabKey := m.Tabs[m.activeTab] // [Tab1, Tab2]
+	items := m.TabsItems[tabKey]  // {Tab1: [Item1, Item2], Tab2: [Item3, Item4]}
+	m.list = list.New(items, list.NewDefaultDelegate(), 0, 0)
+	m.list.SetShowTitle(false)
+}
+func (m *ModelTabs) setListForCurrentTab() {
+	tabKey := m.Tabs[m.activeTab] // [Tab1, Tab2]
+	items := m.TabsItems[tabKey]  // {Tab1: [Item1, Item2], Tab2: [Item3, Item4]}
+	m.list.SetItems(items)
+	m.list.SetShowTitle(false)
+}
 func (m *ModelTabs) nextTab() {
 	m.activeTab = min(m.activeTab+1, len(m.Tabs)-1)
+	m.setListForCurrentTab()
 }
 
 func (m *ModelTabs) prevTab() {
 	m.activeTab = max(m.activeTab-1, 0)
+	m.setListForCurrentTab()
 }
 func (m ModelTabs) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
@@ -90,7 +108,7 @@ func (m ModelTabs) View() string {
 			border.BottomRight = "┴"
 		}
 		style = style.Border(border)
-		renderedTabs = append(renderedTabs, style.Render(t))
+		renderedTabs = append(renderedTabs, style.Render(string(t)))
 	}
 	row := lipgloss.JoinHorizontal(lipgloss.Top, renderedTabs...)
 	fillerStringLen := m.width - lipgloss.Width(row) - identRightEdge
@@ -110,23 +128,25 @@ func (m ModelTabs) View() string {
 	return m.windows.DocStyle.Render(doc.String())
 }
 
-func NewModelTabs(tabs []string, items []list.Item) *ModelTabs {
+func NewModelTabs(ti TabsItems) *ModelTabs {
 	var window = NewWindows()
 	var listKeys = NewListKeyMap()
-	var list = list.New(items, list.NewDefaultDelegate(), 0, 0)
-	list.SetShowTitle(false)
-	return &ModelTabs{
-		windows: window,
-		Keys:    listKeys,
-		Tabs:    tabs,
-		list:    list,
-		// TabContent: tabsContent,
-		help: help.New(),
+	var tabs []Tab
+	for tab, _ := range ti {
+		tabs = append(tabs, tab)
 	}
+
+	m := ModelTabs{
+		windows:   window,
+		Keys:      listKeys,
+		Tabs:      tabs,
+		TabsItems: ti,
+		help:      help.New(),
+	}
+	m.initList()
+	return &m
 }
-func TestModelTabs() *ModelTabs {
-	tabs := []string{"Lip Gloss", "Blush", "Eye Shadow", "Mascara", "Foundation"}
-	// tabsContent := []string{"Lip Gloss Tab", "Blush Tab", "Eye Shadow Tab", "Mascara Tab", "Foundation Tab"}
-	var items = NewTestItems()
-	return NewModelTabs(tabs, items)
-}
+
+// func TestModelTabs() *ModelTabs {
+// 	return NewModelTabs(testTabsItems{})
+// }
