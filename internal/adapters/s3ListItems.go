@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"s3storage/internal/s3"
 	"s3storage/pkg/tui"
+	"strings"
 
 	"github.com/charmbracelet/bubbles/list"
 )
@@ -31,17 +32,32 @@ func FormatBytes(b int64) string {
 	return fmt.Sprintf("%.2f %s", float64(b)/float64(div/unit), units[exp])
 }
 
-func (a *S3ListItems) ListBucket() *[]list.Item {
-	var items = []list.Item{}
+func splitPath(key string) (string, string) {
+	parts := strings.Split(key, "/")
+	return parts[0], strings.Join(parts[1:], "/")
+}
+
+func (a S3ListItems) ListBucket() tui.TabsItems {
+	var tabsItems = make(tui.TabsItems)
 
 	listBuckets := *a.S3.ListBucket()
 	for _, object := range listBuckets {
 		if object.Size != 0 {
-			items = append(items, tui.Item{
-				Top:  object.Key,
+			tab, obj := splitPath(object.Key)
+			if obj == "" {
+				obj = tab
+				tab = "/"
+			}
+			ti := tui.Item{
+				Top:  obj,
 				Desc: fmt.Sprintf("Size: %s", FormatBytes(object.Size)),
-			})
+			}
+			if _, ok := tabsItems[tui.Tab(tab)]; !ok {
+				tabsItems[tui.Tab(tab)] = []list.Item{ti}
+			} else {
+				tabsItems[tui.Tab(tab)] = append(tabsItems[tui.Tab(tab)], ti)
+			}
 		}
 	}
-	return &items
+	return tabsItems
 }
