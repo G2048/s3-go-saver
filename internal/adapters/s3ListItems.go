@@ -115,7 +115,7 @@ func restoreFullPath(tab tui.Tab, file tui.Item) string {
 	}
 }
 
-func (a *S3ListItems) DownloadItems(tab tui.Tab, file tui.Item) tui.Item {
+func (a *S3ListItems) DownloadItem(tab tui.Tab, file tui.Item) tui.Item {
 	if file.Download {
 		return file
 	}

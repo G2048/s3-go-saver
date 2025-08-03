@@ -22,7 +22,7 @@ type TabsItems map[Tab]Items
 type Storage interface {
 	GetTabsItems() TabsItems
 	GetTabs() []Tab
-	DownloadItems(tab Tab, item Item) Item
+	DownloadItem(tab Tab, item Item) Item
 	DeleteItem(tab Tab, item Item) Item
 }
 
@@ -77,7 +77,7 @@ func (m *ModelTabs) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			tab := m.Tabs[m.activeTab] // [Tab1, Tab2]
 			// HACK: convert list.Item to tui.Item
 			currentItem := m.list.SelectedItem().(Item)
-			newItem := m.DownloadItems(tab, currentItem)
+			newItem := m.DownloadItem(tab, currentItem)
 			m.list.VisibleItems()[m.list.Index()] = newItem
 			m.list.SetItems(m.list.VisibleItems())
 		case key.Matches(msg, m.Keys.Delete):
