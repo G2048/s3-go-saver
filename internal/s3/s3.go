@@ -37,6 +37,8 @@ func NewS3Client(awsConfig AwsConfig) *S3Client {
 	// Create an Amazon S3 service client
 	return &S3Client{
 		AwsConfig: awsConfig,
-		s3:        s3.NewFromConfig(cfg),
+		s3: s3.NewFromConfig(cfg, func(o *s3.Options) {
+			o.DisableLogOutputChecksumValidationSkipped = true
+		}),
 	}
 }
