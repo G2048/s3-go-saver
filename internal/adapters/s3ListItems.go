@@ -10,8 +10,9 @@ import (
 )
 
 type S3ListItems struct {
-	S3        *s3.S3Client
-	tabsItems tui.TabsItems
+	S3          *s3.S3Client
+	tabsItems   tui.TabsItems
+	DownloadDir string
 }
 
 // FormatBytes takes a byte size (int64) and returns a human-readable string.
@@ -72,4 +73,7 @@ func (a *S3ListItems) GetTabsItems() tui.TabsItems {
 	}
 	a.tabsItems = tabsItems
 	return tabsItems
+}
+func (a *S3ListItems) DownloadItems(file string) {
+	a.S3.DownloadFile(file, a.DownloadDir)
 }
