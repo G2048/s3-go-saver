@@ -13,6 +13,7 @@ import (
 
 func main() {
 	env := configs.NewEnvironment()
+	configs.DisableLogs()
 	s3 := s3.NewS3Client(s3.AwsConfig{
 		Endpoint:   env.AwsConfig.Endpoint,
 		AccessKey:  env.AwsConfig.AccessKey,
@@ -20,9 +21,8 @@ func main() {
 		Region:     env.AwsConfig.Region,
 		BucketName: env.AwsConfig.BucketName,
 	})
-	adapter := adapters.S3ListItems{S3: s3}
+	adapter := adapters.S3ListItems{S3: s3, DownloadDir: env.AwsConfig.OutputPath}
 	// tabsItems := adapter.ListBucket()
-
 	m := tui.NewModelTabs(&adapter)
 	// m := tui.TestModelTabs()
 	if _, err := tea.NewProgram(m, tea.WithAltScreen()).Run(); err != nil {
