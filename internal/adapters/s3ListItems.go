@@ -10,7 +10,8 @@ import (
 )
 
 type S3ListItems struct {
-	S3 *s3.S3Client
+	S3        *s3.S3Client
+	tabsItems tui.TabsItems
 }
 
 // FormatBytes takes a byte size (int64) and returns a human-readable string.
@@ -37,7 +38,17 @@ func splitPath(key string) (string, string) {
 	return parts[0], strings.Join(parts[1:], "/")
 }
 
-func (a S3ListItems) ListBucket() tui.TabsItems {
+func (a S3ListItems) GetTabs() []tui.Tab {
+	var tabs []tui.Tab
+	if a.tabsItems == nil {
+		a.tabsItems = a.GetTabsItems()
+	}
+	for tab, _ := range a.tabsItems {
+		tabs = append(tabs, tab)
+	}
+	return tabs
+}
+func (a *S3ListItems) GetTabsItems() tui.TabsItems {
 	var tabsItems = make(tui.TabsItems)
 
 	listBuckets := *a.S3.ListBucket()
@@ -59,5 +70,6 @@ func (a S3ListItems) ListBucket() tui.TabsItems {
 			}
 		}
 	}
+	a.tabsItems = tabsItems
 	return tabsItems
 }
