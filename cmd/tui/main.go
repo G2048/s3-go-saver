@@ -22,9 +22,7 @@ func main() {
 		BucketName: env.AwsConfig.BucketName,
 	})
 	adapter := adapters.S3ListItems{S3: s3, DownloadDir: env.AwsConfig.OutputPath}
-	// tabsItems := adapter.ListBucket()
 	m := tui.NewModelTabs(&adapter)
-	// m := tui.TestModelTabs()
 	if _, err := tea.NewProgram(m, tea.WithAltScreen()).Run(); err != nil {
 		fmt.Println("Error running program:", err)
 		os.Exit(1)

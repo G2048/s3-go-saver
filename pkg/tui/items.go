@@ -6,6 +6,8 @@ import (
 
 type Item struct {
 	Top, Desc string
+	Download  bool
+	Tab       Tab
 }
 
 func (i Item) Title() string       { return i.Top }

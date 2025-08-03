@@ -22,7 +22,7 @@ type TabsItems map[Tab]Items
 type Storage interface {
 	GetTabsItems() TabsItems
 	GetTabs() []Tab
-	DownloadItems(file string)
+	DownloadItems(tab Tab, item Item) Item
 }
 
 type ModelTabs struct {
@@ -30,7 +30,7 @@ type ModelTabs struct {
 	windows   *Windows
 	Keys      *ListKeyMap
 	Tabs      []Tab
-	TabsItems map[Tab]Items
+	TabsItems TabsItems
 	list      list.Model
 	help      help.Model
 	activeTab int
@@ -61,16 +61,8 @@ func (m *ModelTabs) prevTab() {
 	m.activeTab = max(m.activeTab-1, 0)
 	m.setListForCurrentTab()
 }
-func (m *ModelTabs) restoreFullPath() string {
-	tabKey := m.Tabs[m.activeTab] // [Tab1, Tab2]
-	currentItem := m.list.SelectedItem()
-	if tabKey == "/" {
-		return currentItem.FilterValue()
-	} else {
-		return string(tabKey) + "/" + currentItem.FilterValue()
-	}
-}
-func (m ModelTabs) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+
+func (m *ModelTabs) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch {
@@ -81,8 +73,12 @@ func (m ModelTabs) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, m.Keys.PrevTab):
 			m.prevTab()
 		case key.Matches(msg, m.Keys.Download):
-			obj := m.restoreFullPath()
-			m.DownloadItems(obj)
+			tab := m.Tabs[m.activeTab] // [Tab1, Tab2]
+			// HACK: convert list.Item to tui.Item
+			currentItem := m.list.SelectedItem().(Item)
+			newItem := m.DownloadItems(tab, currentItem)
+			m.list.VisibleItems()[m.list.Index()] = newItem
+			m.list.SetItems(m.list.VisibleItems())
 		}
 	case tea.WindowSizeMsg:
 		h, v := m.windows.DocStyle.GetFrameSize()
