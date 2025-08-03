@@ -22,9 +22,11 @@ type TabsItems map[Tab]Items
 type Storage interface {
 	GetTabsItems() TabsItems
 	GetTabs() []Tab
+	DownloadItems(file string)
 }
 
 type ModelTabs struct {
+	Storage
 	windows   *Windows
 	Keys      *ListKeyMap
 	Tabs      []Tab
@@ -59,6 +61,15 @@ func (m *ModelTabs) prevTab() {
 	m.activeTab = max(m.activeTab-1, 0)
 	m.setListForCurrentTab()
 }
+func (m *ModelTabs) restoreFullPath() string {
+	tabKey := m.Tabs[m.activeTab] // [Tab1, Tab2]
+	currentItem := m.list.SelectedItem()
+	if tabKey == "/" {
+		return currentItem.FilterValue()
+	} else {
+		return string(tabKey) + "/" + currentItem.FilterValue()
+	}
+}
 func (m ModelTabs) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
@@ -70,7 +81,8 @@ func (m ModelTabs) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, m.Keys.PrevTab):
 			m.prevTab()
 		case key.Matches(msg, m.Keys.Download):
-			m.prevTab()
+			obj := m.restoreFullPath()
+			m.DownloadItems(obj)
 		}
 	case tea.WindowSizeMsg:
 		h, v := m.windows.DocStyle.GetFrameSize()
@@ -139,6 +151,7 @@ func NewModelTabs(s Storage) *ModelTabs {
 	var listKeys = NewListKeyMap()
 
 	m := ModelTabs{
+		Storage:   s,
 		windows:   window,
 		Keys:      listKeys,
 		Tabs:      s.GetTabs(),
