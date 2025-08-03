@@ -7,6 +7,7 @@ type ListKeyMap struct {
 	PrevTab  key.Binding
 	HelpMenu key.Binding
 	Exit     key.Binding
+	Download key.Binding
 }
 
 func NewListKeyMap() *ListKeyMap {
@@ -26,6 +27,10 @@ func NewListKeyMap() *ListKeyMap {
 		HelpMenu: key.NewBinding(
 			key.WithKeys("H"),
 			key.WithHelp("H", "toggle help"),
+		),
+		Download: key.NewBinding(
+			key.WithKeys("enter"),
+			key.WithHelp("enter", "Download file"),
 		),
 	}
 }
