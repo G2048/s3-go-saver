@@ -8,6 +8,7 @@ type ListKeyMap struct {
 	HelpMenu key.Binding
 	Exit     key.Binding
 	Download key.Binding
+	Delete   key.Binding
 }
 
 func NewListKeyMap() *ListKeyMap {
@@ -31,6 +32,10 @@ func NewListKeyMap() *ListKeyMap {
 		Download: key.NewBinding(
 			key.WithKeys("enter"),
 			key.WithHelp("enter", "Download file"),
+		),
+		Delete: key.NewBinding(
+			key.WithKeys("delete"),
+			key.WithHelp("delete", "Delete file"),
 		),
 	}
 }

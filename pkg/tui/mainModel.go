@@ -23,6 +23,7 @@ type Storage interface {
 	GetTabsItems() TabsItems
 	GetTabs() []Tab
 	DownloadItems(tab Tab, item Item) Item
+	DeleteItem(tab Tab, item Item) Item
 }
 
 type ModelTabs struct {
@@ -77,6 +78,12 @@ func (m *ModelTabs) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			// HACK: convert list.Item to tui.Item
 			currentItem := m.list.SelectedItem().(Item)
 			newItem := m.DownloadItems(tab, currentItem)
+			m.list.VisibleItems()[m.list.Index()] = newItem
+			m.list.SetItems(m.list.VisibleItems())
+		case key.Matches(msg, m.Keys.Delete):
+			tab := m.Tabs[m.activeTab] // [Tab1, Tab2]
+			currentItem := m.list.SelectedItem().(Item)
+			newItem := m.DeleteItem(tab, currentItem)
 			m.list.VisibleItems()[m.list.Index()] = newItem
 			m.list.SetItems(m.list.VisibleItems())
 		}

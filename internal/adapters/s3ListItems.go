@@ -116,6 +116,9 @@ func restoreFullPath(tab tui.Tab, file tui.Item) string {
 }
 
 func (a *S3ListItems) DownloadItems(tab tui.Tab, file tui.Item) tui.Item {
+	if file.Download {
+		return file
+	}
 	fullPath := restoreFullPath(tab, file)
 	err := a.S3.DownloadFile(fullPath, a.DownloadDir)
 	if err != nil {
@@ -124,5 +127,32 @@ func (a *S3ListItems) DownloadItems(tab tui.Tab, file tui.Item) tui.Item {
 	}
 	file.Download = true
 	file.Desc = strings.Replace(file.Desc, DontExist, Exist, 1)
+	return file
+}
+func (a *S3ListItems) DeleteItem(tab tui.Tab, file tui.Item) tui.Item {
+	if !file.Download {
+		return file
+	}
+
+	fullPath := a.DownloadDir + "/" + restoreFullPath(tab, file)
+	err := os.Remove(fullPath)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(-1)
+	}
+	file.Download = false
+	file.Desc = strings.Replace(file.Desc, Exist, DontExist, 1)
+
+	// Delete empty dir
+	entries, err := os.ReadDir(a.DownloadDir + "/" + string(tab))
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(-1)
+	}
+	if len(entries) == 0 {
+		if tab != "/" {
+			os.Remove(a.DownloadDir + "/" + string(tab))
+		}
+	}
 	return file
 }
