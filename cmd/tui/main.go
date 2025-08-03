@@ -21,11 +21,9 @@ func main() {
 		BucketName: env.AwsConfig.BucketName,
 	})
 	adapter := adapters.S3ListItems{S3: s3}
-	items := *adapter.ListBucket()
-	fmt.Printf("%#v\n", items)
+	tabsItems := adapter.ListBucket()
 
-	tabs := []string{"Buckets", "Files"}
-	m := tui.NewModelTabs(tabs, items)
+	m := tui.NewModelTabs(tabsItems)
 	// m := tui.TestModelTabs()
 	if _, err := tea.NewProgram(m, tea.WithAltScreen()).Run(); err != nil {
 		fmt.Println("Error running program:", err)
