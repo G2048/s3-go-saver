@@ -23,6 +23,7 @@ const (
 	Exist     = "✅"
 	DontExist = "❌"
 )
+const RootTab = "/"
 
 var mapExist = map[bool]string{true: Exist, false: DontExist}
 
@@ -81,7 +82,7 @@ func (a *S3ListItems) GetTabsItems() tui.TabsItems {
 			tab, obj := splitPath(object.Key)
 			if obj == "" {
 				obj = tab
-				tab = "/"
+				tab = RootTab
 			}
 			exist := checkExist(a.DownloadDir + "/" + object.Key)
 			desc := fmt.Sprintf("Size: %s; Downloaded: %s", FormatBytes(object.Size), mapExist[exist])
@@ -108,7 +109,7 @@ func (a *S3ListItems) GetTabsItems() tui.TabsItems {
 }
 
 func restoreFullPath(tab tui.Tab, file tui.Item) string {
-	if tab == "/" {
+	if tab == RootTab {
 		return file.Top
 	} else {
 		return string(tab) + "/" + file.Top
