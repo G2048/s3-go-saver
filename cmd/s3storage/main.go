@@ -61,6 +61,13 @@ func main() {
 			s3.DownloadFile(object.Key, env.AwsConfig.OutputPath)
 		}
 	}
+	if cmdArgs.UploadAll != "" {
+		exist(cmdArgs.UploadAll)
+		fmt.Printf("Upload all files from '%s' to S3...\n", cmdArgs.UploadAll)
+		if err := s3.UploadFiles(cmdArgs.UploadAll); err != nil {
+			panic(err)
+		}
+	}
 	if cmdArgs.Delete != "" {
 		fmt.Printf("Delete file '%s' from S3\n", cmdArgs.Delete)
 		if err := s3.DeleteFile(cmdArgs.Delete); err != nil {
