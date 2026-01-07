@@ -1,4 +1,4 @@
-module s3storage
+module s3-go-saver
 
 go 1.24.5
 

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"s3storage/cmd"
-	"s3storage/configs"
-	"s3storage/internal/s3"
+	"s3-go-saver/cmd"
+	"s3-go-saver/configs"
+	"s3-go-saver/internal/s3"
 )
 
 func exist(path string) {
