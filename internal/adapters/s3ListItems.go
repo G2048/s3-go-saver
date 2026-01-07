@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"s3storage/internal/s3"
-	"s3storage/pkg/tui"
+	"s3-go-saver/internal/s3"
+	"s3-go-saver/pkg/tui"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/list"
