@@ -34,44 +34,43 @@ func main() {
 		BucketName: env.AwsConfig.BucketName,
 	})
 
-	if cmdArgs.List {
+	switch {
+	case cmdArgs.List:
 		listBuckets := *s3.ListBucket()
 		log.Println("first page results")
 		for _, object := range listBuckets {
 			fmt.Printf("key=%s size=%d\n", object.Key, object.Size)
 		}
 		fmt.Printf("\nTotal Count objects: %d\n", len(listBuckets))
-	}
-	if cmdArgs.Upload != "" {
+
+	case cmdArgs.Upload != "":
 		exist(cmdArgs.Upload)
 		fmt.Printf("Upload file '%s' to S3\n", cmdArgs.Upload)
 		if err := s3.UploadFile(cmdArgs.Upload); err != nil {
 			panic(err)
 		}
-	}
-	if cmdArgs.Download != "" {
+	case cmdArgs.Download != "":
 		fmt.Printf("Download file '%s' from S3\n", cmdArgs.Download)
 		s3.DownloadFile(cmdArgs.Download, env.AwsConfig.OutputPath)
-	}
-	if cmdArgs.DowloadAll {
+	case cmdArgs.DowloadAll:
 		listBuckets := *s3.ListBucket()
 		log.Println("first page results")
 		for _, object := range listBuckets {
 			log.Printf("Load file %s from S3", object.Key)
 			s3.DownloadFile(object.Key, env.AwsConfig.OutputPath)
 		}
-	}
-	if cmdArgs.UploadAll != "" {
+	case cmdArgs.UploadAll != "":
 		exist(cmdArgs.UploadAll)
 		fmt.Printf("Upload all files from '%s' to S3...\n", cmdArgs.UploadAll)
 		if err := s3.UploadFiles(cmdArgs.UploadAll); err != nil {
 			panic(err)
 		}
-	}
-	if cmdArgs.Delete != "" {
+	case cmdArgs.Delete != "":
 		fmt.Printf("Delete file '%s' from S3\n", cmdArgs.Delete)
 		if err := s3.DeleteFile(cmdArgs.Delete); err != nil {
 			panic(err)
 		}
+	default:
+		fmt.Printf("Command not found. For help using: -help option")
 	}
 }
