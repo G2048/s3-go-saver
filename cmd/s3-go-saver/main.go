@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"s3storage/cmd"
-	"s3storage/configs"
-	"s3storage/internal/s3"
+	"s3-go-saver/cmd"
+	"s3-go-saver/configs"
+	"s3-go-saver/internal/s3"
 )
 
 func exist(path string) {
@@ -59,6 +59,13 @@ func main() {
 		for _, object := range listBuckets {
 			log.Printf("Load file %s from S3", object.Key)
 			s3.DownloadFile(object.Key, env.AwsConfig.OutputPath)
+		}
+	}
+	if cmdArgs.UploadAll != "" {
+		exist(cmdArgs.UploadAll)
+		fmt.Printf("Upload all files from '%s' to S3...\n", cmdArgs.UploadAll)
+		if err := s3.UploadFiles(cmdArgs.UploadAll); err != nil {
+			panic(err)
 		}
 	}
 	if cmdArgs.Delete != "" {

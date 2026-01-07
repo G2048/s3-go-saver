@@ -1,6 +1,7 @@
 package configs
 
 import (
+	"io"
 	"log/slog"
 	"os"
 	"strings"
@@ -19,6 +20,10 @@ var logLevels = map[string]slog.Level{
 	"info":  slog.LevelInfo,
 	"warn":  slog.LevelWarn,
 	"error": slog.LevelError,
+}
+
+func DisableLogs() {
+	slog.SetDefault(slog.New(slog.NewJSONHandler(io.Discard, nil)))
 }
 
 func NewLogger(level string) *slog.Logger {
