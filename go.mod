@@ -1,6 +1,6 @@
 module s3-go-saver
 
-go 1.24.5
+go 1.25
 
 require (
 	github.com/Netflix/go-env v0.1.2
