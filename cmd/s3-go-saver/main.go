@@ -49,9 +49,11 @@ func main() {
 		if err := s3.UploadFile(cmdArgs.Upload); err != nil {
 			panic(err)
 		}
+
 	case cmdArgs.Download != "":
 		fmt.Printf("Download file '%s' from S3\n", cmdArgs.Download)
 		s3.DownloadFile(cmdArgs.Download, env.AwsConfig.OutputPath)
+
 	case cmdArgs.DowloadAll:
 		listBuckets := *s3.ListBucket()
 		log.Println("first page results")
@@ -59,17 +61,20 @@ func main() {
 			log.Printf("Load file %s from S3", object.Key)
 			s3.DownloadFile(object.Key, env.AwsConfig.OutputPath)
 		}
+
 	case cmdArgs.UploadAll != "":
 		exist(cmdArgs.UploadAll)
 		fmt.Printf("Upload all files from '%s' to S3...\n", cmdArgs.UploadAll)
 		if err := s3.UploadFiles(cmdArgs.UploadAll); err != nil {
 			panic(err)
 		}
+
 	case cmdArgs.Delete != "":
 		fmt.Printf("Delete file '%s' from S3\n", cmdArgs.Delete)
 		if err := s3.DeleteFile(cmdArgs.Delete); err != nil {
 			panic(err)
 		}
+
 	default:
 		fmt.Printf("Command not found. For help using: -help option")
 	}
