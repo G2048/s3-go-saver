@@ -7,6 +7,7 @@ import (
 	"s3-go-saver/cmd"
 	"s3-go-saver/configs"
 	"s3-go-saver/internal/s3"
+	"sync"
 )
 
 func exist(path string) {
@@ -57,9 +58,13 @@ func main() {
 	case cmdArgs.DowloadAll:
 		listBuckets := *s3.ListBucket()
 		log.Println("first page results")
+		var wg sync.WaitGroup
+
 		for _, object := range listBuckets {
-			log.Printf("Load file %s from S3", object.Key)
-			s3.DownloadFile(object.Key, env.AwsConfig.OutputPath)
+			wg.Go(func() {
+				log.Printf("Load file %s from S3", object.Key)
+				s3.DownloadFile(object.Key, env.AwsConfig.OutputPath)
+			})
 		}
 
 	case cmdArgs.UploadAll != "":
