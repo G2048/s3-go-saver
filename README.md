@@ -1,3 +1,4 @@
+# Necessary env variables
 ```
 AWS_ENDPOINT_URL=https://storage.yandexcloud.net/
 AWS_ACCESS_KEY=KEY
@@ -5,4 +6,9 @@ AWS_SECRET_KEY=SECRET_KEY
 AWS_REGION=ru-central1
 AWS_BUCKET_NAME=NAME
 OUTPUT_DIR="output"
+```
+
+# Build Project
+```
+go build -v -o build/s3-go-saver-cmd cmd/s3-go-saver/main.go
 ```
