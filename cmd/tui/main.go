@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"os"
-	"s3storage/configs"
-	"s3storage/internal/adapters"
-	"s3storage/internal/s3"
-	"s3storage/pkg/tui"
+	"s3-go-saver/configs"
+	"s3-go-saver/internal/adapters"
+	"s3-go-saver/internal/s3"
+	"s3-go-saver/pkg/tui"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
