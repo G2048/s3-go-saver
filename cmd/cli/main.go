@@ -67,8 +67,8 @@ func main() {
 
 		var wg sync.WaitGroup
 		for _, object := range listBuckets {
+			wg.Add(1)
 			go func() {
-				wg.Add(1)
 				defer wg.Done()
 				log.Printf("Load file %s from S3", object.Key)
 				s3.DownloadFile(object.Key, env.AwsConfig.OutputPath)
