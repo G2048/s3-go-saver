@@ -92,6 +92,6 @@ func main() {
 
 	if cmdArgs.Time {
 		elapsed := time.Since(start)
-		fmt.Printf("Time execution: %s\n", elapsed)
+		fmt.Printf("Time of execution: %s\n", elapsed)
 	}
 }
