@@ -61,8 +61,8 @@ func main() {
 	case cmdArgs.DowloadAll:
 		listBuckets := *s3.ListBucket()
 		log.Println("first page results")
+	
 		var wg sync.WaitGroup
-
 		for _, object := range listBuckets {
 			go func() {
 				wg.Add(1)
