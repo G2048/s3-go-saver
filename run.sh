@@ -1,4 +1,6 @@
+BUILDRELOADER=build/livereloader
+
 while true ; do
-  build/pug
+  $BUILDRELOADER
   sleep 1
 done
