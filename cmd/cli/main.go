@@ -36,7 +36,10 @@ func main() {
 		BucketName: env.AwsConfig.BucketName,
 	})
 
-	start := time.Now()
+	var start time.Time
+	if cmdArgs.Time {
+		start = time.Now()
+	}
 
 	switch {
 	case cmdArgs.List:
@@ -61,7 +64,7 @@ func main() {
 	case cmdArgs.DowloadAll:
 		listBuckets := *s3.ListBucket()
 		log.Println("first page results")
-	
+
 		var wg sync.WaitGroup
 		for _, object := range listBuckets {
 			go func() {
