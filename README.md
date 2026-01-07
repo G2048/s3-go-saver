@@ -15,7 +15,7 @@ go build -v -o build/s3-cli cmd/s3-go-saver/main.go
 
 ## Build for Windows
 ```
-GOOS=windows go build -v -o build/s3-cli.exe cmd/s3-go-saver/main.go
+GOOS=windows go build -v -o build/s3-cli.exe cmd/cli/main.go
 ```
 
 # Command line arguments
