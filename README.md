@@ -12,3 +12,22 @@ OUTPUT_DIR="output"
 ```
 go build -v -o build/s3-go-saver-cmd cmd/s3-go-saver/main.go
 ```
+
+# Command line arguments
+```
+Usage of ./build/s3-go-saver-cmd:
+Program to list and download files from S3
+
+  -delete string
+    	Delete file from S3
+  -download string
+    	Download file from S3
+  -download-all
+    	Download all files from S3
+  -list
+    	List all files in bucket
+  -upload string
+    	Upload file to S3
+  -upload-all string
+    	Upload all files from specify directory to S3
+```
