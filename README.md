@@ -10,7 +10,12 @@ OUTPUT_DIR="output"
 
 # Build Project
 ```
-go build -v -o build/s3-go-saver-cmd cmd/s3-go-saver/main.go
+go build -v -o build/s3-cli cmd/s3-go-saver/main.go
+```
+
+## Build for Windows
+```
+GOOS=windows go build -v -o build/s3-cli.exe cmd/s3-go-saver/main.go
 ```
 
 # Command line arguments
