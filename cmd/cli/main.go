@@ -81,6 +81,6 @@ func main() {
 		}
 
 	default:
-		fmt.Printf("Command not found. For help using: -help option")
+		fmt.Printf("Command not found. For help using: -help option\n")
 	}
 }
