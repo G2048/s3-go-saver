@@ -8,6 +8,7 @@ import (
 	"s3-go-saver/configs"
 	"s3-go-saver/internal/s3"
 	"sync"
+	"time"
 )
 
 func exist(path string) {
@@ -34,6 +35,8 @@ func main() {
 		Region:     env.AwsConfig.Region,
 		BucketName: env.AwsConfig.BucketName,
 	})
+
+	start := time.Now()
 
 	switch {
 	case cmdArgs.List:
@@ -85,5 +88,10 @@ func main() {
 
 	default:
 		fmt.Printf("Command not found. For help using: -help option\n")
+	}
+
+	if cmdArgs.Time {
+		elapsed := time.Since(start)
+		fmt.Printf("Time execution: %s\n", elapsed)
 	}
 }

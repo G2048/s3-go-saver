@@ -9,6 +9,7 @@ import (
 type CmdArgs struct {
 	List       bool
 	DowloadAll bool
+	Time       bool
 	UploadAll  string
 	Download   string
 	Upload     string
@@ -27,6 +28,7 @@ func NewCmdArgs() *CmdArgs {
 	var download = flag.String("download", "", "Download file from S3")
 	var downloadAll = flag.Bool("download-all", false, "Download all files from S3")
 	var delete = flag.String("delete", "", "Delete file from S3")
+	var time = flag.Bool("time", false, "Add time of execution")
 
 	flag.Parse()
 	return &CmdArgs{
@@ -36,5 +38,6 @@ func NewCmdArgs() *CmdArgs {
 		DowloadAll: *downloadAll,
 		Delete:     *delete,
 		UploadAll:  *uploadAll,
+		Time:       *time,
 	}
 }
