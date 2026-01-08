@@ -1,3 +1,7 @@
+# s3-go-saver
+
+[![Latest Release](https://img.shields.io/github/v/tag/catemiko/s3-go-saver?label=latest%20release&style=for-the-badge)](https://img.shields.io/github/v/tag/catemiko/s3-go-saver?label=latest%20release&style=for-the-badge)
+
 # Necessary env variables
 ```
 AWS_ENDPOINT_URL=https://storage.yandexcloud.net/
