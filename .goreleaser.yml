@@ -8,7 +8,8 @@ before:
     - go mod tidy
 
 builds:
-  - id: default
+  - id: default-cli
+    main: ./cmd/cli/main.go
     binary: '{{ .ProjectName }}_v{{ .Version }}'
     goos:
       - 'linux'
