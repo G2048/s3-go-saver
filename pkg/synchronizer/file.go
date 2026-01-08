@@ -25,11 +25,14 @@ type File struct {
 	Name string
 	Body []byte
 	fd   *os.File
+	fi   *os.FileInfo
 }
 
 func (f *File) Open() (*os.File, error) {
 	var err error
 	f.fd, err = os.OpenFile(f.Name, os.O_RDWR|os.O_CREATE, 0777)
+	fi, err := os.Stat(f.Name)
+	f.fi = &fi
 	return f.fd, err
 }
 func (f *File) Close() error {
@@ -43,8 +46,10 @@ func (f *File) Write(p []byte) (n int, err error) {
 	ptr := f.fd.Write
 	n, err = checkFileIsOpen(&ptr)(p)
 	err = f.fd.Sync()
-	// f.fd.Seek(int64(len(p)), 1)
 	return n, err
+}
+func (f *File) TimeCreated() int64 {
+	return (*f.fi).ModTime().Unix()
 }
 
 func CreateFile(f Opener) error {
