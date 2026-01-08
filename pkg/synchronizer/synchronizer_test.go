@@ -33,4 +33,7 @@ func TestFile(t *testing.T) {
 
 	fileBody2 := file2.ReadFull()
 	fmt.Printf("\nFile body:\n %s\n", fileBody2)
+
+	fmt.Printf("File ModTime: %d\n", file1.TimeCreated())
+	fmt.Printf("File ModTime: %d\n", file2.TimeCreated())
 }
