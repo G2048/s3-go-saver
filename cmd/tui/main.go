@@ -5,7 +5,7 @@ import (
 	"os"
 	"s3-go-saver/configs"
 	"s3-go-saver/internal/adapters"
-	"s3-go-saver/internal/s3"
+	"s3-go-saver/pkg/s3"
 	"s3-go-saver/pkg/tui"
 
 	tea "github.com/charmbracelet/bubbletea"

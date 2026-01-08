@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"s3-go-saver/internal/s3"
+	"s3-go-saver/pkg/s3"
 	"s3-go-saver/pkg/tui"
 	"strings"
 
