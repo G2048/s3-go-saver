@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"s3-go-saver/cmd"
 	"s3-go-saver/configs"
 	"s3-go-saver/pkg/s3"
 	"sync"
@@ -20,7 +19,7 @@ func exist(path string) {
 }
 
 func main() {
-	cmdArgs := cmd.NewCmdArgs()
+	cmdArgs := NewCmdArgs()
 	env := configs.NewEnvironment()
 
 	level := env.AppConfig.LogLevel
