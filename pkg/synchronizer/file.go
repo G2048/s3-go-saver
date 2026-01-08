@@ -11,7 +11,7 @@ type Opener interface {
 	Open() (*os.File, error)
 }
 
-func CheckFileIsOpen[T any, R any](fn *func(T) (R, error)) func(T) (R, error) {
+func checkFileIsOpen[T any, R any](fn *func(T) (R, error)) func(T) (R, error) {
 	return func(args T) (R, error) {
 		result, err := (*fn)(args)
 		if errors.Is(err, os.ErrClosed) {
@@ -37,11 +37,11 @@ func (f *File) Close() error {
 }
 func (f *File) Read(p []byte) (n int, err error) {
 	ptr := f.fd.Read
-	return CheckFileIsOpen(&ptr)(p)
+	return checkFileIsOpen(&ptr)(p)
 }
 func (f *File) Write(p []byte) (n int, err error) {
 	ptr := f.fd.Write
-	n, err = CheckFileIsOpen(&ptr)(p)
+	n, err = checkFileIsOpen(&ptr)(p)
 	err = f.fd.Sync()
 	f.fd.Seek(int64(len(p)), 0)
 	return n, err
