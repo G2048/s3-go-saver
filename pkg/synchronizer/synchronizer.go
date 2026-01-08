@@ -39,6 +39,18 @@ func SameFile(f1, f2 *File) bool {
 	}
 	return hash1 == hash2
 }
+func NewestFile(f1, f2 *File) *File {
+	t1 := f1.TimeCreated()
+	t2 := f2.TimeCreated()
+	if t1 == t2 {
+		slog.Warn("Files %s and %s is equals!", f1.Name, f2.Name)
+		return nil
+	}
+	if t1 > t2 {
+		return f1
+	}
+	return f2
+}
 
 func Synchronize() {
 	// file1 := "file1.txt"
