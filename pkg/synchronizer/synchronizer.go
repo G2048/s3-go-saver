@@ -18,9 +18,9 @@ func FillBody(f *File) {
 }
 func (f *File) ReadFull() (fileBody []byte) {
 	var buff []byte = make([]byte, 10)
+	f.fd.Seek(0, 0)
 	for {
 		n, _ := io.ReadFull(f, buff)
-		// fmt.Printf("Num: %d buff: %s\n", n, buff)
 		if n == 0 {
 			break
 		}

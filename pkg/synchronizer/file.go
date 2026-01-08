@@ -43,7 +43,7 @@ func (f *File) Write(p []byte) (n int, err error) {
 	ptr := f.fd.Write
 	n, err = checkFileIsOpen(&ptr)(p)
 	err = f.fd.Sync()
-	f.fd.Seek(int64(len(p)), 0)
+	// f.fd.Seek(int64(len(p)), 1)
 	return n, err
 }
 
