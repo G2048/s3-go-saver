@@ -10,7 +10,30 @@ before:
 builds:
   - id: default-cli
     main: ./cmd/cli/main.go
-    binary: '{{ .ProjectName }}_v{{ .Version }}'
+    binary: '{{ .ProjectName }}-cli_v{{ .Version }}'
+    goos:
+      - 'linux'
+      - 'windows'
+      - 'darwin'
+    goarch:
+      - 'amd64'
+      - 'arm'
+      - 'arm64'
+    ignore:
+      - goos: 'windows'
+        goarch: 'arm'
+      - goos: 'windows'
+        goarch: 'arm64'
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - '-s -w -X main.version={{.Version}} -X main.commit={{.Commit}}'
+    mod_timestamp: '{{ .CommitTimestamp }}'
+  - id: default-tui
+    main: ./cmd/tui/main.go
+    binary: '{{ .ProjectName }}-tui_v{{ .Version }}'
     goos:
       - 'linux'
       - 'windows'
