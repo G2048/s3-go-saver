@@ -2,12 +2,14 @@ package s3
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"io/fs"
 	"log/slog"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -143,4 +145,31 @@ func (s *S3Client) DeleteFile(fileName string) error {
 		return err
 	}
 	return err
+}
+
+func (client *S3Client) FuzzySearchFile(fileName string) error {
+	if fileName == "" {
+		return errors.New("Empty string for fyzzy search!")
+	}
+	r, err := regexp.Compile(fileName)
+	if err != nil {
+		slog.Error("Error by compile regex for fuzzing search! FileName: %s ; Error: %s", fileName, err)
+		return err
+	}
+
+	list, err := client.listBucket()
+	if err != nil {
+		slog.Error(fmt.Sprintf("Couldn't list objects in bucket. Here's why: %s", err))
+		return err
+	}
+
+	var key string
+	output := []ListBucketOutput{}
+	for _, object := range list {
+		key = aws.ToString(object.Key)
+		if r.MatchString(key) {
+			output = append(output, ListBucketOutput{aws.ToString(object.Key), *object.Size})
+		}
+	}
+	return nil
 }
