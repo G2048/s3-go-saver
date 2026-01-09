@@ -22,16 +22,22 @@ func checkFileIsOpen[T any, R any](fn *func(T) (R, error)) func(T) (R, error) {
 }
 
 type File struct {
-	Name string
-	Body []byte
+	name string
+	body []byte
 	fd   *os.File
 	fi   *os.FileInfo
 }
 
+func (f File) Name() string {
+	return f.name
+}
+func (f *File) Body() []byte {
+	return f.body
+}
 func (f *File) Open() (*os.File, error) {
 	var err error
-	f.fd, err = os.OpenFile(f.Name, os.O_RDWR|os.O_CREATE, 0777)
-	fi, err := os.Stat(f.Name)
+	f.fd, err = os.OpenFile(f.name, os.O_RDWR|os.O_CREATE, 0777)
+	fi, err := os.Stat(f.name)
 	f.fi = &fi
 	return f.fd, err
 }
