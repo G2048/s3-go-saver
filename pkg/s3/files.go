@@ -149,7 +149,7 @@ func (s *S3Client) DeleteFile(fileName string) error {
 
 func (client *S3Client) FuzzySearchFile(fileName string) ([]ListBucketOutput, error) {
 	if fileName == "" {
-		return nil, errors.New("Empty string for fyzzy search!")
+		return nil, errors.New("Empty string for fuzzy search!")
 	}
 	r, err := regexp.Compile(fileName)
 	if err != nil {
