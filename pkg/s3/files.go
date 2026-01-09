@@ -147,20 +147,20 @@ func (s *S3Client) DeleteFile(fileName string) error {
 	return err
 }
 
-func (client *S3Client) FuzzySearchFile(fileName string) error {
+func (client *S3Client) FuzzySearchFile(fileName string) ([]ListBucketOutput, error) {
 	if fileName == "" {
-		return errors.New("Empty string for fyzzy search!")
+		return nil, errors.New("Empty string for fyzzy search!")
 	}
 	r, err := regexp.Compile(fileName)
 	if err != nil {
 		slog.Error("Error by compile regex for fuzzing search! FileName: %s ; Error: %s", fileName, err)
-		return err
+		return nil, err
 	}
 
 	list, err := client.listBucket()
 	if err != nil {
 		slog.Error(fmt.Sprintf("Couldn't list objects in bucket. Here's why: %s", err))
-		return err
+		return nil, err
 	}
 
 	var key string
@@ -171,5 +171,5 @@ func (client *S3Client) FuzzySearchFile(fileName string) error {
 			output = append(output, ListBucketOutput{aws.ToString(object.Key), *object.Size})
 		}
 	}
-	return nil
+	return output, nil
 }
