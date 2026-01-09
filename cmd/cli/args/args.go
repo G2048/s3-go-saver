@@ -7,13 +7,14 @@ import (
 )
 
 type CmdArgs struct {
-	List       bool
-	DowloadAll bool
-	Time       bool
-	UploadAll  string
-	Download   string
-	Upload     string
-	Delete     string
+	List        bool
+	DowloadAll  bool
+	Time        bool
+	UploadAll   string
+	Download    string
+	Upload      string
+	Delete      string
+	FuzzySearch string
 }
 
 func NewCmdArgs() *CmdArgs {
@@ -29,15 +30,17 @@ func NewCmdArgs() *CmdArgs {
 	var downloadAll = flag.Bool("download-all", false, "Download all files from S3")
 	var delete = flag.String("delete", "", "Delete file from S3")
 	var time = flag.Bool("time", false, "Add time of execution")
+	var fuzzy = flag.String("fuzzy-search", "", "Fuzzy search files inside S3")
 
 	flag.Parse()
 	return &CmdArgs{
-		List:       *list,
-		Download:   *download,
-		Upload:     *upload,
-		DowloadAll: *downloadAll,
-		Delete:     *delete,
-		UploadAll:  *uploadAll,
-		Time:       *time,
+		List:        *list,
+		Download:    *download,
+		Upload:      *upload,
+		DowloadAll:  *downloadAll,
+		Delete:      *delete,
+		UploadAll:   *uploadAll,
+		Time:        *time,
+		FuzzySearch: *fuzzy,
 	}
 }

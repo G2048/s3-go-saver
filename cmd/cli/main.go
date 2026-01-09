@@ -90,6 +90,18 @@ func main() {
 			panic(err)
 		}
 
+	case cmdArgs.FuzzySearch != "":
+		fmt.Printf("Fuzzy search files '%s' inside S3\n", cmdArgs.FuzzySearch)
+		findedFiles, err := s3.FuzzySearchFile(cmdArgs.FuzzySearch)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println("\nFinded files:")
+		for _, file := range findedFiles {
+			fmt.Printf("key=%s size=%d\n", file.Key, file.Size)
+		}
+
 	default:
 		fmt.Printf("Command not found. For help using: -help option\n")
 	}
