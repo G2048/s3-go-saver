@@ -29,6 +29,8 @@ Program to list and download files from S3
     	Download file from S3
   -download-all
     	Download all files from S3
+  -fuzzy-search string
+    	Fuzzy search files inside S3
   -list
     	List all files in bucket
   -time
