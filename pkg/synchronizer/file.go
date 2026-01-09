@@ -34,6 +34,9 @@ func (f File) Name() string {
 func (f *File) Body() []byte {
 	return f.body
 }
+func (f *File) Size() int64 {
+	return int64(len(f.body))
+}
 func (f *File) Open() (*os.File, error) {
 	var err error
 	f.fd, err = os.OpenFile(f.name, os.O_RDWR|os.O_CREATE, 0777)
