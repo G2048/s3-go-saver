@@ -23,20 +23,24 @@ GOOS=windows go build -v -o build/s3-cli.exe cmd/cli/main.go
 Usage of s3-cli:
 Program to list and download files from S3
 
-  -delete string
-    	Delete file from S3
-  -download string
-    	Download file from S3
-  -download-all
-    	Download all files from S3
-  -fuzzy-search string
-    	Fuzzy search files inside S3
-  -list
-    	List all files in bucket
-  -time
-    	Add time of execution
-  -upload string
-    	Upload file to S3
-  -upload-all string
-    	Upload all files from specify directory to S3
+   -delete string
+      	Delete file from S3
+    -download value
+      	Download file from S3
+    -download-all
+      	Download all files from S3
+    -fuzzy string
+      	Fuzzy search files inside S3
+    -ignore-full-path
+      	Ignore full path for downloading files. Using with only -download flag
+    -keys-only
+      	Print only keys without size
+    -list
+      	List all files in bucket
+    -time
+      	Add time of execution
+    -upload string
+      	Upload file to S3
+    -upload-all string
+      	Upload all files from specify directory to S3
 ```
