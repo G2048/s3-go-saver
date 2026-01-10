@@ -15,8 +15,8 @@ type CmdArgs struct {
 	IgnoreFullPath bool
 	UploadAll      string
 	Upload         string
-	Delete         string
 	FuzzySearch    string
+	Delete         stringSlice
 	Download       stringSlice
 }
 
@@ -39,12 +39,13 @@ func NewCmdArgs() *CmdArgs {
 
 	var download stringSlice
 	flag.Var(&download, "download", "Download file from S3")
+	var delete stringSlice
+	flag.Var(&delete, "delete", "Delete file from S3")
 
 	var list = flag.Bool("list", false, "List all files in bucket")
 	var upload = flag.String("upload", "", "Upload file to S3")
 	var uploadAll = flag.String("upload-all", "", "Upload all files from specify directory to S3")
 	var downloadAll = flag.Bool("download-all", false, "Download all files from S3")
-	var delete = flag.String("delete", "", "Delete file from S3")
 	var time = flag.Bool("time", false, "Add time of execution")
 	var fuzzy = flag.String("fuzzy", "", "Fuzzy search files inside S3")
 	var keys = flag.Bool("keys-only", false, "Print only keys without size")
@@ -53,10 +54,10 @@ func NewCmdArgs() *CmdArgs {
 	flag.Parse()
 	return &CmdArgs{
 		Download:       download,
+		Delete:         delete,
 		List:           *list,
 		Upload:         *upload,
 		DowloadAll:     *downloadAll,
-		Delete:         *delete,
 		UploadAll:      *uploadAll,
 		Time:           *time,
 		FuzzySearch:    *fuzzy,

@@ -91,9 +91,9 @@ func main() {
 			panic(err)
 		}
 
-	case cmdArgs.Delete != "":
+	case cmdArgs.Delete != nil:
 		fmt.Printf("Delete file '%s' from S3\n", cmdArgs.Delete)
-		if err := s3.DeleteFile(cmdArgs.Delete); err != nil {
+		if err := s3.DeleteFiles(cmdArgs.Delete); err != nil {
 			panic(err)
 		}
 
