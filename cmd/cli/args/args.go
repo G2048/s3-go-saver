@@ -31,7 +31,7 @@ func NewCmdArgs() *CmdArgs {
 	var downloadAll = flag.Bool("download-all", false, "Download all files from S3")
 	var delete = flag.String("delete", "", "Delete file from S3")
 	var time = flag.Bool("time", false, "Add time of execution")
-	var fuzzy = flag.String("fuzzy-search", "", "Fuzzy search files inside S3")
+	var fuzzy = flag.String("fuzzy", "", "Fuzzy search files inside S3")
 	var keys = flag.Bool("keys-only", false, "Print only keys without size")
 
 	flag.Parse()
