@@ -102,17 +102,17 @@ func createFile(fullPath string) (*os.File, error) {
 	}
 	return file, err
 }
-func (client *S3Client) DownloadFiles(files []string, outputDir string) error {
+func (client *S3Client) DownloadFiles(files []string, outputDir string, withoutDir bool) error {
 	var err error
 	for _, file := range files {
-		err = client.DownloadFile(file, outputDir)
+		err = client.DownloadFile(file, outputDir, withoutDir)
 		if err != nil {
 			slog.Warn(fmt.Sprintf("Couldn't download file %s from S3. Here's why: %v", file, err))
 		}
 	}
 	return err
 }
-func (client *S3Client) DownloadFile(fileName string, outputDir string) error {
+func (client *S3Client) DownloadFile(fileName string, outputDir string, withoutDir bool) error {
 	if outputDir == "" {
 		outputDir = "."
 	}
@@ -125,6 +125,10 @@ func (client *S3Client) DownloadFile(fileName string, outputDir string) error {
 		return err
 	}
 	defer result.Body.Close()
+	if withoutDir {
+		_splits := strings.Split(fileName, "/")
+		fileName = _splits[len(_splits)-1]
+	}
 
 	file, err := createFile(outputDir + "/" + fileName)
 	if err != nil {

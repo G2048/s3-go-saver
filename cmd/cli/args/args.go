@@ -8,15 +8,16 @@ import (
 )
 
 type CmdArgs struct {
-	List        bool
-	DowloadAll  bool
-	Time        bool
-	KeysOnly    bool
-	UploadAll   string
-	Upload      string
-	Delete      string
-	FuzzySearch string
-	Download    stringSlice
+	List           bool
+	DowloadAll     bool
+	Time           bool
+	KeysOnly       bool
+	IgnoreFullPath bool
+	UploadAll      string
+	Upload         string
+	Delete         string
+	FuzzySearch    string
+	Download       stringSlice
 }
 
 type stringSlice []string
@@ -47,17 +48,19 @@ func NewCmdArgs() *CmdArgs {
 	var time = flag.Bool("time", false, "Add time of execution")
 	var fuzzy = flag.String("fuzzy", "", "Fuzzy search files inside S3")
 	var keys = flag.Bool("keys-only", false, "Print only keys without size")
+	var ignoreFullPath = flag.Bool("ignore-full-path", false, "Ignore full path for downloading files. Using with only -download flag")
 
 	flag.Parse()
 	return &CmdArgs{
-		Download:    download,
-		List:        *list,
-		Upload:      *upload,
-		DowloadAll:  *downloadAll,
-		Delete:      *delete,
-		UploadAll:   *uploadAll,
-		Time:        *time,
-		FuzzySearch: *fuzzy,
-		KeysOnly:    *keys,
+		Download:       download,
+		List:           *list,
+		Upload:         *upload,
+		DowloadAll:     *downloadAll,
+		Delete:         *delete,
+		UploadAll:      *uploadAll,
+		Time:           *time,
+		FuzzySearch:    *fuzzy,
+		KeysOnly:       *keys,
+		IgnoreFullPath: *ignoreFullPath,
 	}
 }

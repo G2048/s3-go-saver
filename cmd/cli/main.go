@@ -67,7 +67,7 @@ func main() {
 
 	case cmdArgs.Download != nil:
 		fmt.Printf("Download file '%s' from S3\n", cmdArgs.Download)
-		s3.DownloadFiles(cmdArgs.Download, env.AwsConfig.OutputPath)
+		s3.DownloadFiles(cmdArgs.Download, env.AwsConfig.OutputPath, cmdArgs.IgnoreFullPath)
 
 	case cmdArgs.DowloadAll:
 		listBuckets := *s3.ListBucket()
@@ -79,7 +79,7 @@ func main() {
 			go func() {
 				defer wg.Done()
 				log.Printf("Load file %s from S3", object.Key)
-				s3.DownloadFile(object.Key, env.AwsConfig.OutputPath)
+				s3.DownloadFile(object.Key, env.AwsConfig.OutputPath, false)
 			}()
 		}
 		wg.Wait()
