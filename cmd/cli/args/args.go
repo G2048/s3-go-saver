@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 )
 
 type CmdArgs struct {
@@ -12,10 +13,20 @@ type CmdArgs struct {
 	Time        bool
 	KeysOnly    bool
 	UploadAll   string
-	Download    string
 	Upload      string
 	Delete      string
 	FuzzySearch string
+	Download    stringSlice
+}
+
+type stringSlice []string
+
+func (s *stringSlice) String() string {
+	return fmt.Sprintf("%v", *s)
+}
+func (s *stringSlice) Set(value string) error {
+	*s = append(*s, strings.Split(value, "\n")...)
+	return nil
 }
 
 func NewCmdArgs() *CmdArgs {
@@ -24,10 +35,13 @@ func NewCmdArgs() *CmdArgs {
 		fmt.Fprintf(os.Stderr, "Program to list and download files from S3\n\n")
 		flag.PrintDefaults()
 	}
+
+	var download stringSlice
+	flag.Var(&download, "download", "Download file from S3")
+
 	var list = flag.Bool("list", false, "List all files in bucket")
 	var upload = flag.String("upload", "", "Upload file to S3")
 	var uploadAll = flag.String("upload-all", "", "Upload all files from specify directory to S3")
-	var download = flag.String("download", "", "Download file from S3")
 	var downloadAll = flag.Bool("download-all", false, "Download all files from S3")
 	var delete = flag.String("delete", "", "Delete file from S3")
 	var time = flag.Bool("time", false, "Add time of execution")
@@ -36,8 +50,8 @@ func NewCmdArgs() *CmdArgs {
 
 	flag.Parse()
 	return &CmdArgs{
+		Download:    download,
 		List:        *list,
-		Download:    *download,
 		Upload:      *upload,
 		DowloadAll:  *downloadAll,
 		Delete:      *delete,
