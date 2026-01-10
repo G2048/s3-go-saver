@@ -151,7 +151,7 @@ func (client *S3Client) FuzzySearchFile(fileName string) ([]ListBucketOutput, er
 	if fileName == "" {
 		return nil, errors.New("Empty string for fuzzy search!")
 	}
-	r, err := regexp.Compile(fileName)
+	r, err := regexp.Compile("(?i)" + fileName)
 	if err != nil {
 		slog.Error("Error by compile regex for fuzzing search! FileName: %s ; Error: %s", fileName, err)
 		return nil, err
