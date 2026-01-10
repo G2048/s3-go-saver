@@ -65,9 +65,9 @@ func main() {
 			panic(err)
 		}
 
-	case cmdArgs.Download != "":
+	case cmdArgs.Download != nil:
 		fmt.Printf("Download file '%s' from S3\n", cmdArgs.Download)
-		s3.DownloadFile(cmdArgs.Download, env.AwsConfig.OutputPath)
+		s3.DownloadFiles(cmdArgs.Download, env.AwsConfig.OutputPath)
 
 	case cmdArgs.DowloadAll:
 		listBuckets := *s3.ListBucket()
