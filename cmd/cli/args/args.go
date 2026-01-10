@@ -10,6 +10,7 @@ type CmdArgs struct {
 	List        bool
 	DowloadAll  bool
 	Time        bool
+	KeysOnly    bool
 	UploadAll   string
 	Download    string
 	Upload      string
@@ -31,6 +32,7 @@ func NewCmdArgs() *CmdArgs {
 	var delete = flag.String("delete", "", "Delete file from S3")
 	var time = flag.Bool("time", false, "Add time of execution")
 	var fuzzy = flag.String("fuzzy-search", "", "Fuzzy search files inside S3")
+	var keys = flag.Bool("keys-only", false, "Print only keys without size")
 
 	flag.Parse()
 	return &CmdArgs{
@@ -42,5 +44,6 @@ func NewCmdArgs() *CmdArgs {
 		UploadAll:   *uploadAll,
 		Time:        *time,
 		FuzzySearch: *fuzzy,
+		KeysOnly:    *keys,
 	}
 }

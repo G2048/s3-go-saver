@@ -18,12 +18,19 @@ func exist(path string) {
 		os.Exit(1)
 	}
 }
+func printS3(key string, size int64, keysOnly bool) {
+	var str string
+	if keysOnly {
+		str = fmt.Sprintf("%s\n", key)
+	} else {
+		str = fmt.Sprintf("key=%s size=%d\n", key, size)
+	}
+	fmt.Printf(str)
+}
 
 func main() {
-
 	cmdArgs := args.NewCmdArgs()
 	env := configs.NewEnvironment()
-
 	level := env.AppConfig.LogLevel
 	_ = configs.NewLogger(level)
 	// logger.Debug("%+v", "AppConig:", env.AppConfig)
@@ -47,7 +54,7 @@ func main() {
 		listBuckets := *s3.ListBucket()
 		log.Println("first page results")
 		for _, object := range listBuckets {
-			fmt.Printf("key=%s size=%d\n", object.Key, object.Size)
+			printS3(object.Key, object.Size, cmdArgs.KeysOnly)
 		}
 		fmt.Printf("\nTotal Count objects: %d\n", len(listBuckets))
 
@@ -98,8 +105,8 @@ func main() {
 		}
 
 		fmt.Println("\nFinded files:")
-		for _, file := range findedFiles {
-			fmt.Printf("key=%s size=%d\n", file.Key, file.Size)
+		for _, object := range findedFiles {
+			printS3(object.Key, object.Size, cmdArgs.KeysOnly)
 		}
 
 	default:
