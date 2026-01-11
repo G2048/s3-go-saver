@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"sync"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -103,13 +104,25 @@ func createFile(fullPath string) (*os.File, error) {
 	return file, err
 }
 func (client *S3Client) DownloadFiles(files []string, outputDir string, withoutDir bool) error {
-	var err error
+	var (
+		err error
+		// TODO: change singnature for errors returning... (?)
+		errors []error
+		wg     sync.WaitGroup
+	)
+
 	for _, file := range files {
-		err = client.DownloadFile(file, outputDir, withoutDir)
-		if err != nil {
-			slog.Warn(fmt.Sprintf("Couldn't download file %s from S3. Here's why: %v", file, err))
-		}
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			err = client.DownloadFile(file, outputDir, withoutDir)
+			if err != nil {
+				slog.Warn(fmt.Sprintf("Couldn't download file %s from S3. Here's why: %v", file, err))
+				errors = append(errors, err)
+			}
+		}()
 	}
+	wg.Wait()
 	return err
 }
 func (client *S3Client) DownloadFile(fileName string, outputDir string, withoutDir bool) error {
