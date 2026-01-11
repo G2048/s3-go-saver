@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -12,8 +13,9 @@ import (
 )
 
 type ListBucketOutput struct {
-	Key  string
-	Size int64
+	Key          string
+	Size         int64
+	LastModified time.Time
 }
 
 func (client *S3Client) listBucket() ([]types.Object, error) {
@@ -29,7 +31,7 @@ func (client *S3Client) ListBucket() *[]ListBucketOutput {
 	}
 	output := make([]ListBucketOutput, len(list))
 	for _, object := range list {
-		output = append(output, ListBucketOutput{aws.ToString(object.Key), *object.Size})
+		output = append(output, ListBucketOutput{aws.ToString(object.Key), *object.Size, object.LastModified.UTC()})
 	}
 	return &output
 }
