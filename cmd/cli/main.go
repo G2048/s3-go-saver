@@ -49,6 +49,8 @@ func main() {
 	}
 
 	switch {
+	case cmdArgs.Version:
+		print_version_info()
 	case cmdArgs.List:
 		listBuckets := *s3.ListBucket()
 		log.Println("first page results")

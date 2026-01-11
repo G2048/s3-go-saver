@@ -13,6 +13,7 @@ type CmdArgs struct {
 	Time           bool
 	KeysOnly       bool
 	IgnoreFullPath bool
+	Version        bool
 	UploadAll      string
 	Upload         string
 	FuzzySearch    string
@@ -50,6 +51,7 @@ func NewCmdArgs() *CmdArgs {
 	var fuzzy = flag.String("fuzzy", "", "Fuzzy search files inside S3")
 	var keys = flag.Bool("keys-only", false, "Print only keys without size")
 	var ignoreFullPath = flag.Bool("ignore-full-path", false, "Ignore full path for downloading files. Using with only -download flag")
+	var version = flag.Bool("version", false, "Print programm info")
 
 	flag.Parse()
 	return &CmdArgs{
@@ -63,5 +65,6 @@ func NewCmdArgs() *CmdArgs {
 		FuzzySearch:    *fuzzy,
 		KeysOnly:       *keys,
 		IgnoreFullPath: *ignoreFullPath,
+		Version:        *version,
 	}
 }
