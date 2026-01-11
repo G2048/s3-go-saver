@@ -121,7 +121,7 @@ func (a *S3ListItems) DownloadItem(tab tui.Tab, file tui.Item) tui.Item {
 		return file
 	}
 	fullPath := restoreFullPath(tab, file)
-	err := a.S3.DownloadFile(fullPath, a.DownloadDir)
+	err := a.S3.DownloadFile(fullPath, a.DownloadDir, false)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(-1)
