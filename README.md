@@ -18,6 +18,11 @@ go build -v -o build/s3-cli cmd/s3-go-saver/main.go
 GOOS=windows go build -v -o build/s3-cli.exe cmd/cli/main.go
 ```
 
+## With info about version
+```
+go build -v -buildvcs -o build/s3-cli ./cmd/cli/
+```
+
 # Command line arguments
 ```
 Usage of s3-cli:
