@@ -125,6 +125,35 @@ func (client *S3Client) DownloadFiles(files []string, outputDir string, withoutD
 	wg.Wait()
 	return err
 }
+func (client *S3Client) DownloadAllFiles(outputDir string) error {
+	var (
+		err error
+		// TODO: change singnature for errors returning... (?)
+		errors []error
+		wg     sync.WaitGroup
+	)
+
+	listBuckets := *client.ListBucket()
+	if err != nil {
+		slog.Error(fmt.Sprintf("Couldn't list object from S3. Here's why: %s", err))
+		return err
+	}
+	slog.Info("First page results")
+	for _, object := range listBuckets {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			slog.Info(fmt.Sprintf("Load file %s from S3", object.Key))
+			err = client.DownloadFile(object.Key, outputDir, false)
+			if err != nil {
+				slog.Error(fmt.Sprintf("Couldn't download object from S3. Here's why: %s", err))
+				errors = append(errors, err)
+			}
+		}()
+	}
+	wg.Wait()
+	return err
+}
 func (client *S3Client) DownloadFile(fileName string, outputDir string, withoutDir bool) error {
 	if outputDir == "" {
 		outputDir = "."

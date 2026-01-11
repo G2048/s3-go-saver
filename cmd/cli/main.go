@@ -7,7 +7,6 @@ import (
 	"s3-go-saver/cmd/cli/args"
 	"s3-go-saver/configs"
 	"s3-go-saver/pkg/s3"
-	"sync"
 	"time"
 )
 
@@ -70,19 +69,8 @@ func main() {
 		s3.DownloadFiles(cmdArgs.Download, env.AwsConfig.OutputPath, cmdArgs.IgnoreFullPath)
 
 	case cmdArgs.DowloadAll:
-		listBuckets := *s3.ListBucket()
-		log.Println("first page results")
-
-		var wg sync.WaitGroup
-		for _, object := range listBuckets {
-			wg.Add(1)
-			go func() {
-				defer wg.Done()
-				log.Printf("Load file %s from S3", object.Key)
-				s3.DownloadFile(object.Key, env.AwsConfig.OutputPath, false)
-			}()
-		}
-		wg.Wait()
+		fmt.Printf("Download all files from S3\n")
+		s3.DownloadAllFiles(env.AwsConfig.OutputPath)
 
 	case cmdArgs.UploadAll != "":
 		exist(cmdArgs.UploadAll)
