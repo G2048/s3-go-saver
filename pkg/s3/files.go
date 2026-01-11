@@ -184,7 +184,7 @@ func (s *S3Client) DeleteFile(fileName string) error {
 	return err
 }
 
-func (client *S3Client) FuzzySearchFile(fileName string) ([]ListBucketOutput, error) {
+func (client *S3Client) FuzzySearchFile(fileName string) ([]BucketObjects, error) {
 	if fileName == "" {
 		return nil, errors.New("Empty string for fuzzy search!")
 	}
@@ -201,11 +201,11 @@ func (client *S3Client) FuzzySearchFile(fileName string) ([]ListBucketOutput, er
 	}
 
 	var key string
-	output := []ListBucketOutput{}
+	output := []BucketObjects{}
 	for _, object := range list {
 		key = aws.ToString(object.Key)
 		if r.MatchString(key) {
-			output = append(output, ListBucketOutput{aws.ToString(object.Key), *object.Size})
+			output = append(output, BucketObjects{aws.ToString(object.Key), *object.Size, *object.LastModified})
 		}
 	}
 	return output, nil

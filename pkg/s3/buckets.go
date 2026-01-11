@@ -12,7 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 )
 
-type ListBucketOutput struct {
+type BucketObjects struct {
 	Key          string
 	Size         int64
 	LastModified time.Time
@@ -24,14 +24,14 @@ func (client *S3Client) listBucket() ([]types.Object, error) {
 	})
 	return output.Contents, err
 }
-func (client *S3Client) ListBucket() *[]ListBucketOutput {
+func (client *S3Client) ListBucket() *[]BucketObjects {
 	list, err := client.listBucket()
 	if err != nil {
 		slog.Error(fmt.Sprintf("Couldn't list objects in bucket. Here's why: %s", err))
 	}
-	output := make([]ListBucketOutput, len(list))
+	output := make([]BucketObjects, len(list))
 	for _, object := range list {
-		output = append(output, ListBucketOutput{aws.ToString(object.Key), *object.Size, object.LastModified.UTC()})
+		output = append(output, BucketObjects{aws.ToString(object.Key), *object.Size, object.LastModified.UTC()})
 	}
 	return &output
 }
