@@ -13,6 +13,7 @@ var (
 	GOOS      = "N/A"
 	GoVersion = "N/A"
 	Sum       = "N/A"
+	Compiler  = "N/A"
 )
 
 // HINT: go build -v -buildvcs
@@ -31,11 +32,14 @@ func print_version_info() {
 				GOOS = setting.Value
 			case "GOARCH":
 				GOARCH = setting.Value
+			case "-compiler":
+				Compiler = setting.Value
 			}
 		}
 	}
 
 	fmt.Printf("Go Version: %s\n", GoVersion)
+	fmt.Printf("Go compiler: %s\n", Compiler)
 	fmt.Printf("Application Version: %s\n", Version)
 	fmt.Printf("Application Sum: %s\n", Sum)
 	fmt.Printf("Platform: %s/%s\n", GOOS, GOARCH)
