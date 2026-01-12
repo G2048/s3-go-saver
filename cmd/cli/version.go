@@ -36,9 +36,9 @@ func print_version_info() {
 	}
 
 	fmt.Printf("Go Version: %s\n", GoVersion)
-	fmt.Printf("Application building: %s/%s\n", GOOS, GOARCH)
-	fmt.Printf("Application Sum: %s\n", Sum)
 	fmt.Printf("Application Version: %s\n", Version)
+	fmt.Printf("Application Sum: %s\n", Sum)
+	fmt.Printf("Platform: %s/%s\n", GOOS, GOARCH)
 	fmt.Printf("Commit SHA: %s\n", CommitSHA)
 	fmt.Printf("Build Date: %s\n", BuildDate)
 }
