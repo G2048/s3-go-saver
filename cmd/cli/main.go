@@ -99,6 +99,17 @@ func main() {
 		for _, object := range findedFiles {
 			printS3(object.Key, object.Size, cmdArgs.KeysOnly)
 		}
+	case cmdArgs.InPlaceSearch != "":
+		fmt.Printf("Inplace Fuzzy search '%s' inside S3 files\n", cmdArgs.InPlaceSearch)
+		findedFiles, err := s3.InPlaceSearchFile(cmdArgs.InPlaceSearch)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println("\nFinded files:")
+		for _, object := range findedFiles {
+			printS3(object.Key, object.Size, cmdArgs.KeysOnly)
+		}
 
 	default:
 		fmt.Printf("Command not found. For help using: -help option\n")
