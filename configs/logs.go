@@ -4,6 +4,7 @@ import (
 	"io"
 	"log/slog"
 	"os"
+	"s3-go-saver/pkg/version"
 	"strings"
 )
 
@@ -38,8 +39,8 @@ func NewLogger(level string) *slog.Logger {
 	}
 	// buildInfo, _ := debug.ReadBuildInfo()
 	var Logger = slog.New(slog.NewJSONHandler(os.Stderr, &options)).With(
-		slog.String("app", "yandex_storage"),
-		slog.String("version", "1.0.0"),
+		slog.String("app", version.Application),
+		slog.String("version", version.Version),
 		// slog.Group("program_info",
 		// slog.Int("pid", os.Getpid()),
 		// slog.String("go_version", buildInfo.GoVersion),
