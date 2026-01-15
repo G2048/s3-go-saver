@@ -41,10 +41,10 @@ func GetVersionInfo() {
 }
 func PrintVersionInfo() {
 	fmt.Printf("Application: %s\n", Application)
+	fmt.Printf("Version: %s\n", Version)
+	fmt.Printf("Sum: %s\n", Sum)
 	fmt.Printf("Go Version: %s\n", GoVersion)
 	fmt.Printf("Go compiler: %s\n", Compiler)
-	fmt.Printf("Application Version: %s\n", Version)
-	fmt.Printf("Application Sum: %s\n", Sum)
 	fmt.Printf("Platform: %s/%s\n", GOOS, GOARCH)
 	fmt.Printf("Commit SHA: %s\n", CommitSHA)
 	fmt.Printf("Build Date: %s\n", BuildDate)
