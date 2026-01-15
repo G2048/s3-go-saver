@@ -239,3 +239,83 @@ func (client *S3Client) FuzzySearchFile(fileName string) ([]BucketObjects, error
 	}
 	return output, nil
 }
+
+var searchInFilesFormats = [...]string{"txt", "md"}
+
+func hasExpectedFileFormat(file string) bool {
+	for _, format := range searchInFilesFormats {
+		if strings.HasSuffix(file, format) {
+			return true
+		}
+	}
+	return false
+}
+
+func (client *S3Client) InPlaceSearchFile(phrase string) ([]BucketObjects, error) {
+	if phrase == "" {
+		return nil, errors.New("Empty phrase for search in s3 files!")
+	}
+
+	r, err := regexp.Compile("(?i)" + phrase)
+	if err != nil {
+		slog.Error("Error by compile regex for inplace search! Phrase: %s ; Error: %s", phrase, err)
+		return nil, err
+	}
+
+	list, err := client.listBucket()
+	if err != nil {
+		slog.Error(fmt.Sprintf("Couldn't list objects in bucket. Here's why: %s", err))
+		return nil, err
+	}
+
+	output := []BucketObjects{}
+	var wg sync.WaitGroup
+	for _, typeObject := range list {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+
+			// Checking what searching in .txt and .md files
+			if !hasExpectedFileFormat(aws.ToString(typeObject.Key)) {
+				return
+			}
+
+			// Get S3 object
+			slog.Info(fmt.Sprintf("Get object from S3: %s", aws.ToString(typeObject.Key)))
+			object, err := client.s3.GetObject(context.TODO(), &s3.GetObjectInput{
+				Bucket: aws.String(client.BucketName),
+				Key:    aws.String(aws.ToString(typeObject.Key)),
+			})
+			if err != nil {
+				slog.Error(fmt.Sprintf("Couldn't get object from S3. Here's why: %s", err))
+				// return nil, err
+			}
+			defer object.Body.Close()
+
+			// Read object body
+			fullBody := make([]byte, 0)
+			buff := make([]byte, *typeObject.Size)
+			for {
+				n, err := object.Body.Read(buff)
+				if n == 0 {
+					break
+				}
+				if err != nil {
+					slog.Error(fmt.Sprintf("Cannot read S3 object. Here's why: %s", err))
+					// return nil, err
+				}
+				fullBody = append(fullBody, buff[:n]...)
+			}
+			// Concat file to single string
+			var objectFullText string = string(fullBody)
+			slog.Debug(objectFullText)
+
+			// Final search text in file
+			if r.MatchString(objectFullText) {
+				output = append(output, BucketObjects{aws.ToString(typeObject.Key), *typeObject.Size, *object.LastModified})
+			}
+		}()
+	}
+	wg.Wait()
+	return output, nil
+}
