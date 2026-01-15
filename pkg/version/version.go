@@ -1,4 +1,4 @@
-package main
+package version
 
 import (
 	"fmt"
@@ -6,18 +6,19 @@ import (
 )
 
 var (
-	Version   = "dev"
-	CommitSHA = "N/A"
-	BuildDate = "N/A"
-	GOARCH    = "N/A"
-	GOOS      = "N/A"
-	GoVersion = "N/A"
-	Sum       = "N/A"
-	Compiler  = "N/A"
+	Application = "s3-go-saver"
+	Version     = "dev"
+	CommitSHA   = "N/A"
+	BuildDate   = "N/A"
+	GOARCH      = "N/A"
+	GOOS        = "N/A"
+	GoVersion   = "N/A"
+	Sum         = "N/A"
+	Compiler    = "N/A"
 )
 
 // HINT: go build -v -buildvcs
-func print_version_info() {
+func GetVersionInfo() {
 	if buildInfo, ok := debug.ReadBuildInfo(); ok {
 		GoVersion = buildInfo.GoVersion
 		Version = buildInfo.Main.Version
@@ -37,7 +38,9 @@ func print_version_info() {
 			}
 		}
 	}
-
+}
+func PrintVersionInfo() {
+	fmt.Printf("Application: %s\n", Application)
 	fmt.Printf("Go Version: %s\n", GoVersion)
 	fmt.Printf("Go compiler: %s\n", Compiler)
 	fmt.Printf("Application Version: %s\n", Version)
@@ -45,4 +48,8 @@ func print_version_info() {
 	fmt.Printf("Platform: %s/%s\n", GOOS, GOARCH)
 	fmt.Printf("Commit SHA: %s\n", CommitSHA)
 	fmt.Printf("Build Date: %s\n", BuildDate)
+}
+
+func init() {
+	GetVersionInfo()
 }

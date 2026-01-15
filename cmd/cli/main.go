@@ -7,6 +7,7 @@ import (
 	"s3-go-saver/cmd/cli/args"
 	"s3-go-saver/configs"
 	"s3-go-saver/pkg/s3"
+	"s3-go-saver/pkg/version"
 	"time"
 )
 
@@ -50,7 +51,7 @@ func main() {
 
 	switch {
 	case cmdArgs.Version:
-		print_version_info()
+		version.PrintVersionInfo()
 	case cmdArgs.List:
 		listBuckets := *s3.ListBucket()
 		log.Println("first page results")
