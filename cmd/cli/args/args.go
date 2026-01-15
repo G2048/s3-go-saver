@@ -17,6 +17,7 @@ type CmdArgs struct {
 	UploadAll      string
 	Upload         string
 	FuzzySearch    string
+	InPlaceSearch  string
 	Delete         stringSlice
 	Download       stringSlice
 }
@@ -52,6 +53,7 @@ func NewCmdArgs() *CmdArgs {
 	var keys = flag.Bool("keys-only", false, "Print only keys without size")
 	var ignoreFullPath = flag.Bool("ignore-full-path", false, "Ignore full path for downloading files. Using with only -download flag")
 	var version = flag.Bool("version", false, "Print programm info")
+	var inplace = flag.String("inplace", "", "Inplace fuzzy search in inside S3 files")
 
 	flag.Parse()
 	return &CmdArgs{
@@ -66,5 +68,6 @@ func NewCmdArgs() *CmdArgs {
 		KeysOnly:       *keys,
 		IgnoreFullPath: *ignoreFullPath,
 		Version:        *version,
+		InPlaceSearch:  *inplace,
 	}
 }
