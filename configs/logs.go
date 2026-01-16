@@ -8,13 +8,6 @@ import (
 	"strings"
 )
 
-// type Logslevel struct {
-// 	debug slog.Level
-// 	info  slog.Level
-// 	warn  slog.Level
-// 	error slog.Level
-// }
-
 var LogLevels = [4]string{"debug", "info", "warn", "error"}
 var logLevels = map[string]slog.Level{
 	"debug": slog.LevelDebug,
@@ -37,14 +30,9 @@ func NewLogger(level string) *slog.Logger {
 		AddSource: addSource,
 		Level:     logLevels[level],
 	}
-	// buildInfo, _ := debug.ReadBuildInfo()
 	var Logger = slog.New(slog.NewJSONHandler(os.Stderr, &options)).With(
 		slog.String("app", version.Application),
 		slog.String("version", version.Version),
-		// slog.Group("program_info",
-		// slog.Int("pid", os.Getpid()),
-		// slog.String("go_version", buildInfo.GoVersion),
-		// ),
 	)
 	slog.SetDefault(Logger)
 	return Logger
