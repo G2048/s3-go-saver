@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.4 - 2026-01-16
+
+[d347e37](d347e371dd9c398e37e8fb207a42986ebc774af4)...[97dc109](97dc1091411001305c46419604fc71d6e6c34199)
+
+### Bug Fixes
+
+- Add info about commit, platform and version application ([97dc109](97dc1091411001305c46419604fc71d6e6c34199))
+
+## 1.1.3 - 2026-01-16
+
+[12bf4ea](12bf4ea87cc21b5c405ff04664a90e0d9c99881e)...[d347e37](d347e371dd9c398e37e8fb207a42986ebc774af4)
+
+### Bug Fixes
+
+- Build: replace MAINGO to MAIN_GO var ([d347e37](d347e371dd9c398e37e8fb207a42986ebc774af4))
+
+## 1.1.2 - 2026-01-16
+
+[8b2973c](8b2973c2b14c84f49ac4a0b3e27d3466c22f1357)...[12bf4ea](12bf4ea87cc21b5c405ff04664a90e0d9c99881e)
+
+### Documentation
+
+- Update changelog for v1.1.1 ([12bf4ea](12bf4ea87cc21b5c405ff04664a90e0d9c99881e))
+
 ## 1.1.1 - 2026-01-16
 
 [d4e020c](d4e020c6b5560c7926eae60d6e95c040b75fc617)...[8b2973c](8b2973c2b14c84f49ac4a0b3e27d3466c22f1357)
