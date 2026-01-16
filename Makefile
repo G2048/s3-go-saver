@@ -1,7 +1,7 @@
 # Define variables
 APPNAME = s3-cli
 BINARY_NAME := ./build/$(APPNAME)
-MAIN_GO = ./cmd/cli/main.go
+MAIN_GO = ./cmd/cli
 # Use bash syntax
 SHELL = /bin/bash
 
