@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.1 - 2026-01-16
+
+[d4e020c](d4e020c6b5560c7926eae60d6e95c040b75fc617)...[8b2973c](8b2973c2b14c84f49ac4a0b3e27d3466c22f1357)
+
+### Documentation
+
+- Update changelog for v1.1.0 ([93a78b9](93a78b950a810979f8fdb57126bcf95932695fbc))
+- Update "# Build Project" section ([8b2973c](8b2973c2b14c84f49ac4a0b3e27d3466c22f1357))
+
+### Miscellaneous Tasks
+
+- Remove unnecessary comments ([4a573a6](4a573a6f3e18dca0a37736f43c115b30d49e41bb))
+
+### Build
+
+- Declare building steps ([ed23942](ed23942f463e4fd6c4507d0d0d566b77dfaf3a69))
+
+### Ref
+
+- Add type LogLevel; add consts for log levels; change input signature for NewLogger() func ([f8d6632](f8d6632e3c4d30857ac91b73512285358a595f5a))
+- Add debug AwsConfig and AppConfig structures ([38dad7a](38dad7a49399a3c1bb5a784e665c58d4c9d8a617))
+
 ## 1.1.0 - 2026-01-15
 
 [dcb2563](dcb2563de5b1567bc818ba8a3c2544872223df43)...[d4e020c](d4e020c6b5560c7926eae60d6e95c040b75fc617)
