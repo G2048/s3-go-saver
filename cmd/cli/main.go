@@ -32,7 +32,7 @@ func main() {
 	cmdArgs := args.NewCmdArgs()
 	env := configs.NewEnvironment()
 	level := env.AppConfig.LogLevel
-	_ = configs.NewLogger(level)
+	_ = configs.NewLogger(configs.LogLevel(level))
 	// logger.Debug("%+v", "AppConig:", env.AppConfig)
 	// logger.Debug("%+v", "AwsConfig:", env.AwsConfig)
 

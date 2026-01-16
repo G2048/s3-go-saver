@@ -5,30 +5,38 @@ import (
 	"log/slog"
 	"os"
 	"s3-go-saver/pkg/version"
-	"strings"
 )
 
-var LogLevels = [4]string{"debug", "info", "warn", "error"}
-var logLevels = map[string]slog.Level{
-	"debug": slog.LevelDebug,
-	"info":  slog.LevelInfo,
-	"warn":  slog.LevelWarn,
-	"error": slog.LevelError,
+type LogLevel string
+
+const (
+	DEBUG   = LogLevel("debug")
+	INFO    = LogLevel("info")
+	WARNING = LogLevel("warn")
+	ERROR   = LogLevel("error")
+)
+
+type LogLevels map[LogLevel]slog.Level
+
+var MapLogLevels = LogLevels{
+	DEBUG:   slog.LevelDebug,
+	INFO:    slog.LevelInfo,
+	WARNING: slog.LevelWarn,
+	ERROR:   slog.LevelError,
 }
 
 func DisableLogs() {
 	slog.SetDefault(slog.New(slog.NewJSONHandler(io.Discard, nil)))
 }
 
-func NewLogger(level string) *slog.Logger {
-	level = strings.ToLower(level)
+func NewLogger(logLevel LogLevel) *slog.Logger {
 	addSource := false
-	if level == "debug" {
+	if logLevel == DEBUG {
 		addSource = true
 	}
 	options := slog.HandlerOptions{
 		AddSource: addSource,
-		Level:     logLevels[level],
+		Level:     MapLogLevels[logLevel],
 	}
 	var Logger = slog.New(slog.NewJSONHandler(os.Stderr, &options)).With(
 		slog.String("app", version.Application),
