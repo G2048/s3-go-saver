@@ -20,8 +20,8 @@ tidy: ## runs tidy to fix go.mod dependencies
 
 build:
 	make tidy
-	GOOS=linux GOARCH=amd64 go build -v -buildvcs -ldflags '-s -w' -o $(BINARY_NAME) $(MAINGO)
-	GOOS=windows GOARCH=amd64 go build -v -buildvcs -ldflags '-s -w' -o $(BINARY_NAME)-windows $(MAINGO)
+	GOOS=linux GOARCH=amd64 go build -v -buildvcs -ldflags '-s -w' -o $(BINARY_NAME) $(MAIN_GO)
+	GOOS=windows GOARCH=amd64 go build -v -buildvcs -ldflags '-s -w' -o $(BINARY_NAME)-windows $(MAIN_GO)
 	# GOOS=linux GOARCH=amd64 CGO_ENABLED=1 CC="zig cc -target x86_64-linux-gnu" go build -v -buildvcs -o $(BINARY_NAME)-zig $(MAIN_GO)
 	printf "\n"
 	make changelog
