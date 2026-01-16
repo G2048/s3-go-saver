@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"log/slog"
 	"os"
 	"s3-go-saver/cmd/cli/args"
 	"s3-go-saver/configs"
@@ -31,10 +32,9 @@ func printS3(key string, size int64, keysOnly bool) {
 func main() {
 	cmdArgs := args.NewCmdArgs()
 	env := configs.NewEnvironment()
-	level := env.AppConfig.LogLevel
-	_ = configs.NewLogger(configs.LogLevel(level))
-	// logger.Debug("%+v", "AppConig:", env.AppConfig)
-	// logger.Debug("%+v", "AwsConfig:", env.AwsConfig)
+	configs.NewLogger(configs.LogLevel(env.AppConfig.LogLevel))
+	slog.Debug(fmt.Sprintf("AppConfig: %#+v", env.AppConfig))
+	slog.Debug(fmt.Sprintf("AwsConfig: %#+v", env.AwsConfig))
 
 	s3 := s3.NewS3Client(s3.AwsConfig{
 		Endpoint:   env.AwsConfig.Endpoint,
