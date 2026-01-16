@@ -10,8 +10,9 @@ OUTPUT_DIR="output"
 
 # Build Project
 ```
-go build -v -o build/s3-cli cmd/s3-go-saver/main.go
+make -B build
 ```
+> Making binary file for linux and windows platforms
 
 ## Build for Windows
 ```
