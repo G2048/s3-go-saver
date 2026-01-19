@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.0 - 2026-01-19
+
+[97dc109](97dc1091411001305c46419604fc71d6e6c34199)...[e7dbd89](e7dbd8973fc1a5e72df3a7a59bb2e0fa92509528)
+
+### Documentation
+
+- Update changelog for v1.1.4 ([dc8b1a7](dc8b1a7fe960aec70084c68d40b0263a0be9de39))
+
+### Features
+
+- Change upload flag to under-flag; add the second subbcommands flag: -path and -name ([9e9d92e](9e9d92e2737de93dc6824c5b0e29c51256ade1a4))
+- S3.Upload(): add choose a castom key for file uploading to S3 ([e7dbd89](e7dbd8973fc1a5e72df3a7a59bb2e0fa92509528))
+
 ## 1.1.4 - 2026-01-16
 
 [d347e37](d347e371dd9c398e37e8fb207a42986ebc774af4)...[97dc109](97dc1091411001305c46419604fc71d6e6c34199)
