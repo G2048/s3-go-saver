@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.1 - 2026-01-19
+
+[e7dbd89](e7dbd8973fc1a5e72df3a7a59bb2e0fa92509528)...[002b4a1](002b4a13c4f7e17b397ad383aa404d5e322c91f5)
+
+### Bug Fixes
+
+- ListBucket(): right fill array of BucketObjects{} ([002b4a1](002b4a13c4f7e17b397ad383aa404d5e322c91f5))
+
+### Documentation
+
+- Update changelog for v1.2.0 ([6989b8f](6989b8f51654217f6d504c3e846769d9a8ae2f5b))
+- Add the -upload key to -help print ([6ef27c7](6ef27c70d0de67e989527e5bb424fbe641487733))
+- -help: add to -upload subflags -path and -name ([fc3c0f5](fc3c0f5d58ab2b4c4d041e052240f10799d08608))
+
 ## 1.2.0 - 2026-01-19
 
 [97dc109](97dc1091411001305c46419604fc71d6e6c34199)...[e7dbd89](e7dbd8973fc1a5e72df3a7a59bb2e0fa92509528)
