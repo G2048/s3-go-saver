@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type UploadArgs struct {
+	Name string
+	Path string
+}
 type CmdArgs struct {
 	List           bool
 	DowloadAll     bool
@@ -15,11 +19,11 @@ type CmdArgs struct {
 	IgnoreFullPath bool
 	Version        bool
 	UploadAll      string
-	Upload         string
 	FuzzySearch    string
 	InPlaceSearch  string
 	Delete         stringSlice
 	Download       stringSlice
+	Upload         UploadArgs
 }
 
 type stringSlice []string
@@ -45,7 +49,10 @@ func NewCmdArgs() *CmdArgs {
 	flag.Var(&delete, "delete", "Delete file from S3")
 
 	var list = flag.Bool("list", false, "List all files in bucket")
-	var upload = flag.String("upload", "", "Upload file to S3")
+	var upload = flag.NewFlagSet("upload", flag.ExitOnError)
+	var uploadPath = upload.String("path", "", "Upload file by name to S3")
+	var uploadName = upload.String("name", "", "Custom name for file from S3")
+	// var upload = flag.String("upload", "", "Upload file to S3")
 	var uploadAll = flag.String("upload-all", "", "Upload all files from specify directory to S3")
 	var downloadAll = flag.Bool("download-all", false, "Download all files from S3")
 	var time = flag.Bool("time", false, "Add time of execution")
@@ -56,11 +63,13 @@ func NewCmdArgs() *CmdArgs {
 	var inplace = flag.String("inplace", "", "Inplace fuzzy search in inside S3 files")
 
 	flag.Parse()
+	upload.Parse(os.Args[2:])
+	uploadArgs := UploadArgs{*uploadName, *uploadPath}
 	return &CmdArgs{
 		Download:       download,
 		Delete:         delete,
+		Upload:         uploadArgs,
 		List:           *list,
-		Upload:         *upload,
 		DowloadAll:     *downloadAll,
 		UploadAll:      *uploadAll,
 		Time:           *time,

@@ -60,10 +60,10 @@ func main() {
 		}
 		fmt.Printf("\nTotal Count objects: %d\n", len(listBuckets))
 
-	case cmdArgs.Upload != "":
-		exist(cmdArgs.Upload)
-		fmt.Printf("Upload file '%s' to S3\n", cmdArgs.Upload)
-		if err := s3.UploadFile(cmdArgs.Upload); err != nil {
+	case cmdArgs.Upload.Path != "":
+		exist(cmdArgs.Upload.Path)
+		fmt.Printf("Upload file '%#v' to S3\n", cmdArgs.Upload)
+		if err := s3.UploadFile(cmdArgs.Upload.Path); err != nil {
 			panic(err)
 		}
 
