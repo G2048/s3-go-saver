@@ -36,11 +36,18 @@ func (s *stringSlice) Set(value string) error {
 	return nil
 }
 
+var uploadHelpString string = "  -upload\n\tUpload file to S3\n"
+var uploadPathHelpString string = "Upload file by name to S3"
+var uploadNameHelpString string = "Custom name for file from S3"
+var uploadSubflagsHelpString string = fmt.Sprintf("  Subflags:\n\t-path: %s\n\t-name: %s\n", uploadPathHelpString, uploadNameHelpString)
+
+var subflagsHelpString string = uploadHelpString + uploadSubflagsHelpString
+
 func NewCmdArgs() *CmdArgs {
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
 		fmt.Fprintf(os.Stderr, "Program to list and download files from S3\n\n")
-		fmt.Fprintf(os.Stderr, "  -upload\n\tUpload file to S3\n")
+		fmt.Fprintf(os.Stderr, subflagsHelpString)
 		flag.PrintDefaults()
 	}
 
@@ -50,8 +57,8 @@ func NewCmdArgs() *CmdArgs {
 	flag.Var(&delete, "delete", "Delete file from S3")
 
 	var upload = flag.NewFlagSet("upload", flag.ExitOnError)
-	var uploadPath = upload.String("path", "", "Upload file by name to S3")
-	var uploadName = upload.String("name", "", "Custom name for file from S3")
+	var uploadPath = upload.String("path", "", uploadPathHelpString)
+	var uploadName = upload.String("name", "", uploadNameHelpString)
 
 	var list = flag.Bool("list", false, "List all files in bucket")
 	var uploadAll = flag.String("upload-all", "", "Upload all files from specify directory to S3")
