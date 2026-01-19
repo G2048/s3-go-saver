@@ -40,6 +40,7 @@ func NewCmdArgs() *CmdArgs {
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
 		fmt.Fprintf(os.Stderr, "Program to list and download files from S3\n\n")
+		fmt.Fprintf(os.Stderr, "  -upload\n\tUpload file to S3\n")
 		flag.PrintDefaults()
 	}
 
@@ -48,11 +49,11 @@ func NewCmdArgs() *CmdArgs {
 	var delete stringSlice
 	flag.Var(&delete, "delete", "Delete file from S3")
 
-	var list = flag.Bool("list", false, "List all files in bucket")
 	var upload = flag.NewFlagSet("upload", flag.ExitOnError)
 	var uploadPath = upload.String("path", "", "Upload file by name to S3")
 	var uploadName = upload.String("name", "", "Custom name for file from S3")
-	// var upload = flag.String("upload", "", "Upload file to S3")
+
+	var list = flag.Bool("list", false, "List all files in bucket")
 	var uploadAll = flag.String("upload-all", "", "Upload all files from specify directory to S3")
 	var downloadAll = flag.Bool("download-all", false, "Download all files from S3")
 	var time = flag.Bool("time", false, "Add time of execution")
