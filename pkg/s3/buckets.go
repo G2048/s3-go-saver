@@ -30,8 +30,8 @@ func (client *S3Client) ListBucket() *[]BucketObjects {
 		slog.Error(fmt.Sprintf("Couldn't list objects in bucket. Here's why: %s", err))
 	}
 	output := make([]BucketObjects, len(list))
-	for _, object := range list {
-		output = append(output, BucketObjects{aws.ToString(object.Key), *object.Size, object.LastModified.UTC()})
+	for i, object := range list {
+		output[i] = BucketObjects{aws.ToString(object.Key), *object.Size, object.LastModified.UTC()}
 	}
 	return &output
 }
