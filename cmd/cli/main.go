@@ -24,7 +24,7 @@ func printS3(object s3.BucketObjects, keysOnly bool) {
 	if keysOnly {
 		str = fmt.Sprintf("%s\n", object.Key)
 	} else {
-		str = fmt.Sprintf("key=%s size=%d\n", object.Key, object.Size)
+		str = fmt.Sprintf("key=%s size=%d last_modified=%v\n", object.Key, object.Size, object.LastModified)
 	}
 	fmt.Printf(str)
 }
