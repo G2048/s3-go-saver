@@ -17,8 +17,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
-func (client *S3Client) UploadFile(fileName string) error {
+func (client *S3Client) UploadFile(fileName, key string) error {
 	var err error
+	if key == "" {
+		key = fileName
+	}
 	file, err := os.Open(fileName)
 	if err != nil {
 		slog.Error(fmt.Sprintf("Couldn't open file %v to upload. Here's why: %v", fileName, err))
@@ -28,7 +31,7 @@ func (client *S3Client) UploadFile(fileName string) error {
 
 	_, err = client.s3.PutObject(context.TODO(), &s3.PutObjectInput{
 		Bucket: aws.String(client.BucketName),
-		Key:    aws.String(fileName),
+		Key:    aws.String(key),
 		Body:   file,
 	})
 	if err != nil {

@@ -63,7 +63,7 @@ func main() {
 	case cmdArgs.Upload.Path != "":
 		exist(cmdArgs.Upload.Path)
 		fmt.Printf("Upload file '%#v' to S3\n", cmdArgs.Upload)
-		if err := s3.UploadFile(cmdArgs.Upload.Path); err != nil {
+		if err := s3.UploadFile(cmdArgs.Upload.Path, cmdArgs.Upload.Name); err != nil {
 			panic(err)
 		}
 
