@@ -19,12 +19,12 @@ func exist(path string) {
 		os.Exit(1)
 	}
 }
-func printS3(key string, size int64, keysOnly bool) {
+func printS3(object s3.BucketObjects, keysOnly bool) {
 	var str string
 	if keysOnly {
-		str = fmt.Sprintf("%s\n", key)
+		str = fmt.Sprintf("%s\n", object.Key)
 	} else {
-		str = fmt.Sprintf("key=%s size=%d\n", key, size)
+		str = fmt.Sprintf("key=%s size=%d\n", object.Key, object.Size)
 	}
 	fmt.Printf(str)
 }
@@ -56,7 +56,7 @@ func main() {
 		listBuckets := *s3.ListBucket()
 		log.Println("first page results")
 		for _, object := range listBuckets {
-			printS3(object.Key, object.Size, cmdArgs.KeysOnly)
+			printS3(object, cmdArgs.KeysOnly)
 		}
 		fmt.Printf("\nTotal Count objects: %d\n", len(listBuckets))
 
@@ -97,7 +97,7 @@ func main() {
 
 		fmt.Println("\nFinded files:")
 		for _, object := range findedFiles {
-			printS3(object.Key, object.Size, cmdArgs.KeysOnly)
+			printS3(object, cmdArgs.KeysOnly)
 		}
 	case cmdArgs.InPlaceSearch != "":
 		fmt.Printf("Inplace Fuzzy search '%s' inside S3 files\n", cmdArgs.InPlaceSearch)
@@ -108,7 +108,7 @@ func main() {
 
 		fmt.Println("\nFinded files:")
 		for _, object := range findedFiles {
-			printS3(object.Key, object.Size, cmdArgs.KeysOnly)
+			printS3(object, cmdArgs.KeysOnly)
 		}
 
 	default:
