@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.0.0 - 2026-02-06
+
+[002b4a1](002b4a13c4f7e17b397ad383aa404d5e322c91f5)...[4300ec2](4300ec2931272ba160fde60d1c065c064c240038)
+
+### Documentation
+
+- Update changelog for v1.2.1 ([f6af754](f6af7546a8af2224abdf3e7c8e332b8d3db6c4c0))
+
+### Features
+
+- PrintS3: print last time modified ([0aad3f8](0aad3f8f3f053a3ab95b959484752de8532cfd39))
+
+### Miscellaneous Tasks
+
+- -fuzzy: clarify description ([c72915e](c72915e577683e93c73b1df68ae84c47af83f38e))
+
+### Ref
+
+- PrintS3: recive the BucketObjects{} struct ([be1caf9](be1caf9b05220f3eb7cbbed36318e1732becf8d6))
+- -inplace: clarify description and rename to -fuzzy-inplace ([4300ec2](4300ec2931272ba160fde60d1c065c064c240038))
+
 ## 1.2.1 - 2026-01-19
 
 [e7dbd89](e7dbd8973fc1a5e72df3a7a59bb2e0fa92509528)...[002b4a1](002b4a13c4f7e17b397ad383aa404d5e322c91f5)

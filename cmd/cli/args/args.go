@@ -68,7 +68,7 @@ func NewCmdArgs() *CmdArgs {
 	var keys = flag.Bool("keys-only", false, "Print only keys without size")
 	var ignoreFullPath = flag.Bool("ignore-full-path", false, "Ignore full path for downloading files. Using with only -download flag")
 	var version = flag.Bool("version", false, "Print programm info")
-	var inplace = flag.String("inplace", "", "Inplace fuzzy search in inside S3 files")
+	var inplace = flag.String("fuzzy-inplace", "", "Inplace fuzzy search within S3 files")
 
 	flag.Parse()
 	upload.Parse(os.Args[2:])
