@@ -2,9 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-## 2.0.0 - 2026-02-06
+## 1.3.0 - 2026-02-06
 
-[002b4a1](002b4a13c4f7e17b397ad383aa404d5e322c91f5)...[4300ec2](4300ec2931272ba160fde60d1c065c064c240038)
+[002b4a1](002b4a13c4f7e17b397ad383aa404d5e322c91f5)...[f1198ad](f1198ada84c6c72386a75154f2697e74b9e33d13)
 
 ### Documentation
 
@@ -21,7 +21,7 @@ All notable changes to this project will be documented in this file.
 ### Ref
 
 - PrintS3: recive the BucketObjects{} struct ([be1caf9](be1caf9b05220f3eb7cbbed36318e1732becf8d6))
-- -inplace: clarify description and rename to -fuzzy-inplace ([4300ec2](4300ec2931272ba160fde60d1c065c064c240038))
+- -inplace: clarify description and rename to -fuzzy-inplace ([f1198ad](f1198ada84c6c72386a75154f2697e74b9e33d13))
 
 ## 1.2.1 - 2026-01-19
 
