@@ -64,7 +64,7 @@ func NewCmdArgs() *CmdArgs {
 	var uploadAll = flag.String("upload-all", "", "Upload all files from specify directory to S3")
 	var downloadAll = flag.Bool("download-all", false, "Download all files from S3")
 	var time = flag.Bool("time", false, "Add time of execution")
-	var fuzzy = flag.String("fuzzy", "", "Fuzzy search files inside S3")
+	var fuzzy = flag.String("fuzzy", "", "Fuzzy search files by keyname inside S3")
 	var keys = flag.Bool("keys-only", false, "Print only keys without size")
 	var ignoreFullPath = flag.Bool("ignore-full-path", false, "Ignore full path for downloading files. Using with only -download flag")
 	var version = flag.Bool("version", false, "Print programm info")
